@@ -4,9 +4,11 @@ const tr = document.querySelector('tr');
 const td = document.querySelector('td');
 
 /*----- app's state (variables) -----*/
-let cellIDArray = []; //create array to store cell id.. ---> do i even need this?
+let boardArray = []; //stores what is in each sq of the game board
+let playerArray =[]; //input what player assigns to later compare boardArray to playerArray to check if win
 let numRows = 10; //can be user input in future
 let numCols = 10;
+let bombArr = [];
 
 /*----- cached element references -----*/
 
@@ -14,17 +16,18 @@ let numCols = 10;
 /*----- event listeners -----*/
 /*----- functions -----*/
 
-function initialRender(){
+function init(){
     for (let i=0; i<numRows; i++){
-        cellIDArray[i] = new Array(); //create new array within array (row array)
+        boardArray[i] = new Array(); //create new array within array (row array)
         var row = table.insertRow(i);
         for (let j=0; j<numCols; j++){
             var cell = row.insertCell(-1); //accepts -1 or 0. -1 is to the left
             //cell.innerHTML = `${i}${j}`; //this is just to show the id of each cell so i know what it is
-            cell.id=`${i}${j}`; //store id of cell -- should i put this in an array?
-            cellIDArray[i].push(cell.id); //push to end of current row array (i)
+            cell.id=`${i}${j}`; //each td of the cell has an id matching an arrayindex
+            boardArray[i].push("0"); //push to end of current row array (i) - initial board array will have value starting as 0
         }
     }
+    //genBombs(25);
 }
 
 function rndIdx(num){  //pass in num for either numRows or numCols that we want to multiply by
@@ -32,24 +35,28 @@ function rndIdx(num){  //pass in num for either numRows or numCols that we want 
 }
 
 function genBombs(num){ //pass in how many bombs to generate
-    let bombArr =[];
     for (let i=0; i<num; i++){
         let rowIdx = rndIdx(numRows);
         let colIdx = rndIdx(numCols);
         bombIndex = `${rowIdx}${colIdx}`;
+        document.getElementById(bombIndex).innerHTML = "bomb"; //put bombs on board
         bombArr.push(bombIndex);
+        boardArray[rowIdx][colIdx] = "bomb"; //add bomb to board array that stores bomb/num
     }
-    //return bombArr;
+    return bombArr;
+    //numBombs = bombArr.length;
+
+}
+
+function render(){
 
 }
 
 
+init();
+genBombs(25);
+console.log(boardArray);
 
-
-
-
-initialRender();
-console.log(cellIDArray);
 // cell02 = document.getElementById('02');
 // cell02.style.backgroundColor = "red";
 // cell02.textContent = 'blah';
