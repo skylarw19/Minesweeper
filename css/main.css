@@ -10,11 +10,10 @@ table, th, td {
 
 td{
     background-color: lightblue;
+    width: 25px;
+    height: 25px;
 }
 
-tr{
-    border: 1px solid black;
-    border-collapse: collapse;
-}
+
 
 
