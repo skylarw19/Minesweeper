@@ -5,6 +5,7 @@ let boardArray = []; //stores what is in each sq of the game board
 let playerArray =[]; //input what player assigns to later compare boardArray to playerArray to check if win
 let numRows = 10; //can be user input in future
 let numCols = 10;
+let boardSize = numRows*numCols;
 let bombIdxArr = [];
 
 /*----- cached element references -----*/
@@ -13,7 +14,33 @@ const tr = document.querySelector('tr');
 const td = document.querySelector('td');
 
 /*----- event listeners -----*/
+table.addEventListener('click',a);
+
+function a(evt){
+    cellID = evt.target.id;
+    console.log(cellID);
+    evt.target.innerHTML = cellID;
+    
+}
+
 /*----- functions -----*/
+
+function init2(){
+    var numSquares =0;
+    for (let i=0; i<numRows; i++){
+        var row = table.insertRow(i);
+        for (let j=0; j<numCols; j++){
+            var cell = row.insertCell(-1); //accepts -1 or 0. -1 is to the left
+            //cell.innerHTML = `${numSquares}`; //this is just to show the id of each cell so i know what it is
+            cell.id=`${numSquares}`; //each td of the cell has an id matching an arrayindex
+            boardArray.push(0); //initialize board array with value of 0
+            numSquares++;
+        }
+    }
+}
+init2();
+
+
 
 function init(){
     for (let i=0; i<numRows; i++){
@@ -81,9 +108,9 @@ function render(){
 }
 
 
-init();
-genNum();
-console.log(boardArray);
+// init();
+// genNum();
+// console.log(boardArray);
 
 // cell02 = document.getElementById('02');
 // cell02.style.backgroundColor = "red";
