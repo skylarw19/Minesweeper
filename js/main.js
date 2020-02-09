@@ -1,17 +1,16 @@
 /*----- constants -----*/
-const table = document.querySelector('table');
-const tr = document.querySelector('tr');
-const td = document.querySelector('td');
 
 /*----- app's state (variables) -----*/
 let boardArray = []; //stores what is in each sq of the game board
 let playerArray =[]; //input what player assigns to later compare boardArray to playerArray to check if win
 let numRows = 10; //can be user input in future
 let numCols = 10;
-let bombArr = [];
+let bombIdxArr = [];
 
 /*----- cached element references -----*/
-
+const table = document.querySelector('table');
+const tr = document.querySelector('tr');
+const td = document.querySelector('td');
 
 /*----- event listeners -----*/
 /*----- functions -----*/
@@ -24,10 +23,10 @@ function init(){
             var cell = row.insertCell(-1); //accepts -1 or 0. -1 is to the left
             //cell.innerHTML = `${i}${j}`; //this is just to show the id of each cell so i know what it is
             cell.id=`${i}${j}`; //each td of the cell has an id matching an arrayindex
-            boardArray[i].push("0"); //push to end of current row array (i) - initial board array will have value starting as 0
+            boardArray[i].push(0); //push to end of current row array (i) - initial board array will have value starting as 0
         }
     }
-    //genBombs(25);
+    genBombs(25);
 }
 
 function rndIdx(num){  //pass in num for either numRows or numCols that we want to multiply by
@@ -39,14 +38,42 @@ function genBombs(num){ //pass in how many bombs to generate
         let rowIdx = rndIdx(numRows);
         let colIdx = rndIdx(numCols);
         bombIndex = `${rowIdx}${colIdx}`;
-        document.getElementById(bombIndex).innerHTML = "bomb"; //put bombs on board
-        bombArr.push(bombIndex);
+        // are these 2 lines needed? what if i push this into an array and then do getelementbyid(${array[idx]}) for rendering
+        document.getElementById(bombIndex).innerHTML = "bomb"; //put bombs on board // i wouldn't show bomb until they accidentally click it
+        bombIdxArr.push(bombIndex);
+        //
         boardArray[rowIdx][colIdx] = "bomb"; //add bomb to board array that stores bomb/num
     }
-    return bombArr;
-    //numBombs = bombArr.length;
-
+    return bombIdxArr;
+    //numBombs = bombIdxArr.length;
 }
+
+function genNum(){
+    for (let i=0; i<boardArray.length; i++){
+        for (let j=0; i<boardArray[0].length; i++){
+            if (boardArray[i][j]==="bomb"){
+                if(boardArray[i-1][j-1] !== undefined && boardArray[i-1][j-1] !== "bomb")
+                    boardArray[i-1][j-1]++;
+                // if(boardArray[i-1][j] !== undefined && boardArray[i-1][j] !== "bomb")
+                //     boardArray[i-1][j]++;
+                // if(boardArray[i-1][j+1] !== undefined && boardArray[i-1][j+1] !== "bomb")
+                //     boardArray[i-1][j+1]++;
+                // if(boardArray[i][j-1] !== undefined && boardArray[i][j-1] !== "bomb")
+                //     boardArray[i][j-1]++;
+                // if(boardArray[i][j+1] !== undefined && boardArray[i][j+1] !== "bomb")
+                //     boardArray[i][j+1]++;
+                // if(boardArray[i+1][j-1] !== undefined && boardArray[i+1][j-1] !== "bomb")
+                //     boardArray[i+1][j-1]++;
+                // if(boardArray[i+1][j] !== undefined && boardArray[i+1][j] !== "bomb")
+                //     boardArray[i+1][j]++;
+                // if(boardArray[i+1][j+1] !== undefined && boardArray[i+1][j+1] !== "bomb")
+                //     boardArray[i+1][j+1]++;
+            }
+        }
+    }
+}
+
+
 
 function render(){
 
@@ -54,7 +81,7 @@ function render(){
 
 
 init();
-genBombs(25);
+genNum();
 console.log(boardArray);
 
 // cell02 = document.getElementById('02');
