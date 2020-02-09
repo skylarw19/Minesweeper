@@ -38,22 +38,22 @@ function genBombs(num){ //pass in how many bombs to generate
         let rowIdx = rndIdx(numRows);
         let colIdx = rndIdx(numCols);
         bombIndex = `${rowIdx}${colIdx}`;
-        // are these 2 lines needed? what if i push this into an array and then do getelementbyid(${array[idx]}) for rendering
-        document.getElementById(bombIndex).innerHTML = "bomb"; //put bombs on board // i wouldn't show bomb until they accidentally click it
-        bombIdxArr.push(bombIndex);
+        // are these 2 lines needed? what if i push this into an array and then do getelementbyid(${array[idx]}) for rendering. first line below is place hodler
+        document.getElementById(bombIndex).innerHTML = "bomb"; //put bombs on board // this is just PLACEHOLDER CODE i wouldn't show bomb until they accidentally click it
+        bombIdxArr.push(bombIndex); //do i even need this
         //
         boardArray[rowIdx][colIdx] = "bomb"; //add bomb to board array that stores bomb/num
     }
-    return bombIdxArr;
+    return bombIdxArr; 
     //numBombs = bombIdxArr.length;
 }
 
 function genNum(){
     for (let i=0; i<boardArray.length; i++){
-        for (let j=0; i<boardArray[0].length; i++){
-            if (boardArray[i][j]==="bomb"){
-                if(boardArray[i-1][j-1] !== undefined && boardArray[i-1][j-1] !== "bomb")
-                    boardArray[i-1][j-1]++;
+        for (let j=0; j<boardArray[0].length; j++){
+        
+                // if(boardArray[i-1][j-1] !== undefined && boardArray[i-1][j-1] !== "bomb")
+                //     boardArray[i-1][j-1]++;
                 // if(boardArray[i-1][j] !== undefined && boardArray[i-1][j] !== "bomb")
                 //     boardArray[i-1][j]++;
                 // if(boardArray[i-1][j+1] !== undefined && boardArray[i-1][j+1] !== "bomb")
@@ -71,7 +71,8 @@ function genNum(){
             }
         }
     }
-}
+
+
 
 
 
