@@ -3,8 +3,8 @@
 /*----- app's state (variables) -----*/
 let boardArray = []; //stores what is in each sq of the game board
 let playerArray =[]; //input what player assigns to later compare boardArray to playerArray to check if win
-let numRows = 10; //can be user input in future
-let numCols = 10;
+let numRows = 3; //can be user input in future
+let numCols = 12;
 let boardSize = numRows*numCols;
 let bombIdxArr = [];
 
@@ -14,10 +14,10 @@ const tr = document.querySelector('tr');
 const td = document.querySelector('td');
 
 /*----- event listeners -----*/
-table.addEventListener('click',handleclick);
-table.addEventListener('contextmenu',handleDoubleClick);
+table.addEventListener('click',handleClick);
+table.addEventListener('contextmenu',handleRightClick);
 
-function handleclick(evt){
+function handleClick(evt){
     let cellID = evt.target.id;
     console.log(cellID);
     evt.target.innerHTML = cellID;   
@@ -26,10 +26,11 @@ function handleclick(evt){
     // if click is 0, expand board
 }
 
-function handleDoubleClick(evt){
+function handleRightClick(evt){
     let cellID = evt.target.id;
     console.log("hello" + cellID);
-    evt.target.innerHTML = "double";
+    evt.target.innerHTML = "rClick";
+    //need to do something so that the right click menu doesn't pop up
 }
 
 /*----- functions -----*/
@@ -78,7 +79,7 @@ function genBombs(numBombs){
         bombIdxArr.push(bombIndex); //used just to test out what the boms are
         boardArray[bombIndex] = "bomb"; //add to board array where bombs are
     }
-    return bombIdxArr; 
+    return boardArray; 
 }
 
 // function genBombs(num){ //pass in how many bombs to generate
@@ -96,29 +97,124 @@ function genBombs(numBombs){
 //     //numBombs = bombIdxArr.length;
 // }
 
-function genNum(){
+// function genNum(){
+//     for (let i=0; i<boardArray.length; i++){
+//         if (i<numCols){ //top row
+//             if (i===0){
+//                 //top left corner
+//             }
+//             else if (i === numCols-1){
+//                 //top right corner
+//             } else{
+//                 //top row
+//             }
+//         } else if (i%numCols ===0){ //left column
+//             if (i===numCols-1){ //bot left corner
+
+//             } else { //left column
+
+//             }
+//         } else if ((i+1) % numCols ===0){ //right column
+//             if (i===boardArray.length-1){ //bot right corern
+
+//             } else { //right col
+
+//             }
+//         } else if ( i>(boardArray.length-numCols) && i<boardArray.length ){ //bot row
+
+//         }
+//     }
+// }
+
+
+function genNumSwitchCase(){
     for (let i=0; i<boardArray.length; i++){
-        for (let j=0; j<boardArray[0].length; j++){
-        
-                // if(boardArray[i-1][j-1] !== undefined && boardArray[i-1][j-1] !== "bomb")
-                //     boardArray[i-1][j-1]++;
-                // if(boardArray[i-1][j] !== undefined && boardArray[i-1][j] !== "bomb")
-                //     boardArray[i-1][j]++;
-                // if(boardArray[i-1][j+1] !== undefined && boardArray[i-1][j+1] !== "bomb")
-                //     boardArray[i-1][j+1]++;
-                // if(boardArray[i][j-1] !== undefined && boardArray[i][j-1] !== "bomb")
-                //     boardArray[i][j-1]++;
-                // if(boardArray[i][j+1] !== undefined && boardArray[i][j+1] !== "bomb")
-                //     boardArray[i][j+1]++;
-                // if(boardArray[i+1][j-1] !== undefined && boardArray[i+1][j-1] !== "bomb")
-                //     boardArray[i+1][j-1]++;
-                // if(boardArray[i+1][j] !== undefined && boardArray[i+1][j] !== "bomb")
-                //     boardArray[i+1][j]++;
-                // if(boardArray[i+1][j+1] !== undefined && boardArray[i+1][j+1] !== "bomb")
-                //     boardArray[i+1][j+1]++;
-            }
+        sqType = squareType(i);
+        switch (sqType){
+            case "top left corner": 
+                boardArray[i]=sqType;
+                break;
+            case "top right corner":
+                boardArray[i]=sqType;
+                break;
+            case "top row":
+                boardArray[i]=sqType;
+                break;
+            case "bot left corner":
+                boardArray[i]=sqType;
+                break;
+            case "left col":
+                boardArray[i]=sqType;
+                break;
+            case "bot right corner":
+                boardArray[i]=sqType;
+                break;
+            case "right col":
+                boardArray[i]=sqType;
+                break;
+            case "bot row":
+                boardArray[i]=sqType;
+                break;
+            default:
+                boardArray[i]=sqType;
+                break;
         }
     }
+    return boardArray;
+}
+
+function squareType(i){
+    if (i<numCols){
+        if (i===0) return "top left corner";
+        else if (i===numCols-1) return "top right corner";
+        else return "top row"
+    } else if (i%numCols===0){
+        if (i===boardArray.length-numCols) return "bot left corner"
+        else return "left col"
+    } else if ((i+1)%numCols===0){
+        if (i===boardArray.length-1) return "bot right corner"
+        else return "right col"
+    } else if (i>(boardArray.length-numCols) && i<boardArray.length) return "bot row";
+    else return "regular";
+}
+
+// sqType = squareType(45);
+// //EXAMPLE OF SWITCH CASE
+// switch (sqType){
+//     case 0:
+//         console.log("hello");
+//         break;
+//     case 1:
+//         console.log("hellow world");
+//         break;
+//     default: console.log("bye");
+// }
+
+
+
+// function genNum(){
+//     for (let i=0; i<boardArray.length; i++){
+//         for (let j=0; j<boardArray[0].length; j++){
+        
+//                 // if(boardArray[i-1][j-1] !== undefined && boardArray[i-1][j-1] !== "bomb")
+//                 //     boardArray[i-1][j-1]++;
+//                 // if(boardArray[i-1][j] !== undefined && boardArray[i-1][j] !== "bomb")
+//                 //     boardArray[i-1][j]++;
+//                 // if(boardArray[i-1][j+1] !== undefined && boardArray[i-1][j+1] !== "bomb")
+//                 //     boardArray[i-1][j+1]++;
+//                 // if(boardArray[i][j-1] !== undefined && boardArray[i][j-1] !== "bomb")
+//                 //     boardArray[i][j-1]++;
+//                 // if(boardArray[i][j+1] !== undefined && boardArray[i][j+1] !== "bomb")
+//                 //     boardArray[i][j+1]++;
+//                 // if(boardArray[i+1][j-1] !== undefined && boardArray[i+1][j-1] !== "bomb")
+//                 //     boardArray[i+1][j-1]++;
+//                 // if(boardArray[i+1][j] !== undefined && boardArray[i+1][j] !== "bomb")
+//                 //     boardArray[i+1][j]++;
+//                 // if(boardArray[i+1][j+1] !== undefined && boardArray[i+1][j+1] !== "bomb")
+//                 //     boardArray[i+1][j+1]++;
+//             }
+//         }
+//     }
 
 function render(){
 
