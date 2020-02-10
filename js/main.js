@@ -97,67 +97,56 @@ function genBombs(numBombs){
 //     //numBombs = bombIdxArr.length;
 // }
 
-// function genNum(){
-//     for (let i=0; i<boardArray.length; i++){
-//         if (i<numCols){ //top row
-//             if (i===0){
-//                 //top left corner
-//             }
-//             else if (i === numCols-1){
-//                 //top right corner
-//             } else{
-//                 //top row
-//             }
-//         } else if (i%numCols ===0){ //left column
-//             if (i===numCols-1){ //bot left corner
+function isNotBomb(i){
+    return boardArray[i]!=="bomb";
+}
+function isBomb(i){
+    return boardArray[i]==="bomb"
+}
 
-//             } else { //left column
-
-//             }
-//         } else if ((i+1) % numCols ===0){ //right column
-//             if (i===boardArray.length-1){ //bot right corern
-
-//             } else { //right col
-
-//             }
-//         } else if ( i>(boardArray.length-numCols) && i<boardArray.length ){ //bot row
-
-//         }
-//     }
-// }
-
-
-function genNumSwitchCase(){
+function genNum(){
     for (let i=0; i<boardArray.length; i++){
+        let count = 0;
         sqType = squareType(i);
-        switch (sqType){
-            case "top left corner": 
-                boardArray[i]=sqType;
-                break;
-            case "top right corner":
-                boardArray[i]=sqType;
-                break;
-            case "top row":
-                boardArray[i]=sqType;
-                break;
-            case "bot left corner":
-                boardArray[i]=sqType;
-                break;
-            case "left col":
-                boardArray[i]=sqType;
-                break;
-            case "bot right corner":
-                boardArray[i]=sqType;
-                break;
-            case "right col":
-                boardArray[i]=sqType;
-                break;
-            case "bot row":
-                boardArray[i]=sqType;
-                break;
-            default:
-                boardArray[i]=sqType;
-                break;
+        if (boardArray[i]!=="bomb"){
+            switch (sqType){
+                case "top left corner": 
+                    if(isBomb(1)) count++;
+                    if(isBomb(numCols)) count++;
+                    if(isBomb(numCols+1)) count++;
+                    break;
+                case "top right corner":
+                    if(isBomb(i-1)) count++;
+                    if(isBomb(i*2)) count++;
+                    if(isBomb((i*2)+1)) count++;
+                    break;
+                // case "top row":
+                //     boardArray[i]=sqType;
+                //     break;
+                case "bot left corner":
+                    if(isBomb(i/2)) count++;
+                    if(isBomb((i/2)+1)) count++;
+                    if(isBomb(i+1)) count++;
+                    break;
+                // case "left col":
+                //     boardArray[i]=sqType;
+                //     break;
+                case "bot right corner":
+                    if(isBomb(i-1)) count++;
+                    if(isBomb(i-numCols)) count++;
+                    if(isBomb(i-numCols-1)) count++;
+                    break;
+                // case "right col":
+                //     boardArray[i]=sqType;
+                //     break;
+                // case "bot row":
+                //     boardArray[i]=sqType;
+                //     break;
+                // default:
+                //     boardArray[i]=sqType;
+                //     break;
+            }
+            boardArray[i] = count;
         }
     }
     return boardArray;
