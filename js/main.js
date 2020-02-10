@@ -120,31 +120,54 @@ function genNum(){
                     if(isBomb(i*2)) count++;
                     if(isBomb((i*2)+1)) count++;
                     break;
-                // case "top row":
-                //     boardArray[i]=sqType;
-                //     break;
+                case "top row":
+                    if(isBomb(i-1)) count++; //left 
+                    if(isBomb(i+1)) count++; //right 
+                    if(isBomb(i+numCols-1)) count++; //bot left
+                    if(isBomb(i+numCols)) count++; //bot
+                    if(isBomb(i+numCols+1)) count++; //bot right
+                    break;
                 case "bot left corner":
                     if(isBomb(i/2)) count++;
                     if(isBomb((i/2)+1)) count++;
                     if(isBomb(i+1)) count++;
                     break;
-                // case "left col":
-                //     boardArray[i]=sqType;
-                //     break;
+                case "left col":
+                    if(isBomb(i-numCols)) count++; //top
+                    if(isBomb(i-numCols+1)) count++; //top right
+                    if(isBomb(i+1)) count++; //right
+                    if(isBomb(i+numCols+1)) count++; //bot right
+                    if(isBomb(i+numCols)) count++; //bot
+                    break;
                 case "bot right corner":
                     if(isBomb(i-1)) count++;
                     if(isBomb(i-numCols)) count++;
                     if(isBomb(i-numCols-1)) count++;
                     break;
-                // case "right col":
-                //     boardArray[i]=sqType;
-                //     break;
-                // case "bot row":
-                //     boardArray[i]=sqType;
-                //     break;
-                // default:
-                //     boardArray[i]=sqType;
-                //     break;
+                case "right col":
+                    if(isBomb(i-numCols)) count++; //top
+                    if(isBomb(i-numCols-1)) count++; //top left
+                    if(isBomb(i-1)) count++; //left 
+                    if(isBomb(i+numCols-1)) count++; //bot left
+                    if(isBomb(i+numCols)) count++; //bot
+                    break;
+                case "bot row":
+                    if(isBomb(i-1)) count++; //left 
+                    if(isBomb(i-numCols-1)) count++; //top left
+                    if(isBomb(i-numCols)) count++; //top
+                    if(isBomb(i-numCols+1)) count++; //top right
+                    if(isBomb(i+1)) count++; //right
+                    break;
+                default:
+                    if(isBomb(i-numCols-1)) count++; //top left
+                    if(isBomb(i-numCols)) count++; //top
+                    if(isBomb(i-numCols+1)) count++; //top right
+                    if(isBomb(i+1)) count++; //right
+                    if(isBomb(i+numCols+1)) count++; //bot right
+                    if(isBomb(i+numCols)) count++; //bot
+                    if(isBomb(i+numCols-1)) count++; //bot left
+                    if(isBomb(i-1)) count++; //left 
+                    break;
             }
             boardArray[i] = count;
         }
