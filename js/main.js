@@ -3,35 +3,56 @@
 /*----- app's state (variables) -----*/
 let boardArray = []; //stores what is in each sq of the game board
 let playerArray =[]; //input what player assigns to later compare boardArray to playerArray to check if win
-let numRows = 3; //can be user input in future
-let numCols = 12;
-let boardSize = numRows*numCols;
+//or maybe dont compare boards but if all bombs are flagged --> win. then during handleclik checkwin?? 
+//or make player array the same as board array immediately. but change the the bombs to flags/vice versa.
+let numRows = 10; //can be user input in future
+let numCols = 10;
 let bombIdxArr = [];
 
 /*----- cached element references -----*/
 const table = document.querySelector('table');
-const tr = document.querySelector('tr');
-const td = document.querySelector('td');
+const tr = document.querySelector('tr'); //is this needed?
+const td = document.querySelector('td');  //is this needed?
 
 /*----- event listeners -----*/
-table.addEventListener('click',handleClick);
-table.addEventListener('contextmenu',handleRightClick);
+table.addEventListener('click',reveal);
+table.addEventListener('contextmenu',flag);
+table.addEventListener('dblclick',questionMark); 
 
-function handleClick(evt){
+function reveal(evt){
     let cellID = evt.target.id;
-    console.log(cellID);
-    evt.target.innerHTML = cellID;   
-    // once clicked, show Image
+    console.log(cellID); //coment out
+    evt.target.innerHTML = boardArray[cellID]; //show on the board what is in the board array
+    if (playerArray[cellID] === undefined /* OR EQUALS FLAG */){  //if playerarr cell is empty OR equals flag
+        playerArray[cellID] = boardArray[cellID]; //set player array to what board array ele is
+        //will need to add something here to check win condition if they click a bomb
+        //console.log(playerArray); //comment out
+    } 
+        
+    // once clicked, show Image/number
     // if click is bomb, lose 
     // if click is 0, expand board
+    // if it already shows a number/blank then it can't be clicked again
+    
+    
 }
 
-function handleRightClick(evt){
+function flag(evt){
     let cellID = evt.target.id;
-    console.log("hello" + cellID);
-    evt.target.innerHTML = "rClick";
-    //need to do something so that the right click menu doesn't pop up
+    //console.log("hello" + cellID);
+    evt.preventDefault(); //prevents rightclikc menu from popping up
+    //evt.target.innerHTML = "rClick";
+    //when you right click, you're flaggin it. 
+    evt.target.style.backgroundImage = "url('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/snowflake_2744.png')";
+
 }
+
+function questionMark(evt){
+    let cellID = evt.target.id;
+    playerArray[cellID] = "?"; 
+    console.log("hello")
+}
+
 
 /*----- functions -----*/
 
@@ -47,6 +68,8 @@ function init(){
             numSquares++;
         }
     }
+    genBombs(25);
+    genNum();
     //genBombs(25); // init function should generate bombs
     //genNum(); // init func should genNum into board array
     //rendering - init func shoudl render initial bombs and numbers but be HIDDEN until clicked.
@@ -54,19 +77,7 @@ function init(){
     //inside render func: need to pass target?? unknown. if bomb show bomb image. 
 }
 
-// function init(){
-//     for (let i=0; i<numRows; i++){
-//         boardArray[i] = new Array(); //create new array within array (row array)
-//         var row = table.insertRow(i);
-//         for (let j=0; j<numCols; j++){
-//             var cell = row.insertCell(-1); //accepts -1 or 0. -1 is to the left
-//             //cell.innerHTML = `${i}${j}`; //this is just to show the id of each cell so i know what it is
-//             cell.id=`${i}${j}`; //each td of the cell has an id matching an arrayindex
-//             boardArray[i].push(0); //push to end of current row array (i) - initial board array will have value starting as 0
-//         }
-//     }
-//     genBombs(25);
-// }
+
 
 function rndIdx(numBombs){  //pass in num for either numRows or numCols that we want to multiply by
     return idx = Math.floor(Math.random()*numBombs);
@@ -82,26 +93,8 @@ function genBombs(numBombs){
     return boardArray; 
 }
 
-// function genBombs(num){ //pass in how many bombs to generate
-//     for (let i=0; i<num; i++){
-//         let rowIdx = rndIdx(numRows);
-//         let colIdx = rndIdx(numCols);
-//         bombIndex = `${rowIdx}${colIdx}`;
-//         // are these 2 lines needed? what if i push this into an array and then do getelementbyid(${array[idx]}) for rendering. first line below is place hodler
-//         document.getElementById(bombIndex).innerHTML = "bomb"; //put bombs on board // this is just PLACEHOLDER CODE i wouldn't show bomb until they accidentally click it
-//         bombIdxArr.push(bombIndex); //do i even need this
-//         //
-//         boardArray[rowIdx][colIdx] = "bomb"; //add bomb to board array that stores bomb/num
-//     }
-//     return bombIdxArr; 
-//     //numBombs = bombIdxArr.length;
-// }
-
-function isNotBomb(i){
-    return boardArray[i]!=="bomb";
-}
 function isBomb(i){
-    return boardArray[i]==="bomb"
+    return boardArray[i]==="bomb";
 }
 
 function genNum(){
@@ -190,6 +183,25 @@ function squareType(i){
     else return "regular";
 }
 
+function render(){
+
+}
+init();
+
+// function init(){
+//     for (let i=0; i<numRows; i++){
+//         boardArray[i] = new Array(); //create new array within array (row array)
+//         var row = table.insertRow(i);
+//         for (let j=0; j<numCols; j++){
+//             var cell = row.insertCell(-1); //accepts -1 or 0. -1 is to the left
+//             //cell.innerHTML = `${i}${j}`; //this is just to show the id of each cell so i know what it is
+//             cell.id=`${i}${j}`; //each td of the cell has an id matching an arrayindex
+//             boardArray[i].push(0); //push to end of current row array (i) - initial board array will have value starting as 0
+//         }
+//     }
+//     genBombs(25);
+// }
+
 // sqType = squareType(45);
 // //EXAMPLE OF SWITCH CASE
 // switch (sqType){
@@ -203,6 +215,20 @@ function squareType(i){
 // }
 
 
+// function genBombs(num){ //pass in how many bombs to generate
+//     for (let i=0; i<num; i++){
+//         let rowIdx = rndIdx(numRows);
+//         let colIdx = rndIdx(numCols);
+//         bombIndex = `${rowIdx}${colIdx}`;
+//         // are these 2 lines needed? what if i push this into an array and then do getelementbyid(${array[idx]}) for rendering. first line below is place hodler
+//         document.getElementById(bombIndex).innerHTML = "bomb"; //put bombs on board // this is just PLACEHOLDER CODE i wouldn't show bomb until they accidentally click it
+//         bombIdxArr.push(bombIndex); //do i even need this
+//         //
+//         boardArray[rowIdx][colIdx] = "bomb"; //add bomb to board array that stores bomb/num
+//     }
+//     return bombIdxArr; 
+//     //numBombs = bombIdxArr.length;
+// }
 
 // function genNum(){
 //     for (let i=0; i<boardArray.length; i++){
@@ -228,11 +254,8 @@ function squareType(i){
 //         }
 //     }
 
-function render(){
 
-}
-init();
-genBombs(25);
+
 
 // init();
 // genNum();
