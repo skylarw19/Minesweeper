@@ -30,7 +30,7 @@ function reveal(evt){
         //console.log(playerArray); //comment out
     }  
     if(boardArray[cellID]===0) //if it clicked on zero
-        search2(cellID);
+        search(cellID);
     // once clicked, show Image/number
     // if click is bomb, lose 
     // if click is 0, expand board
@@ -91,7 +91,7 @@ function init(){
            playerArray[i] = "-";
        }
     }
-    genBombs(10);
+    genBombs(25);
     genNum();
     //gen player array
    
@@ -162,18 +162,26 @@ function isBomb(i){
 
 
 
-function search2(i){
+function search(i){
+    //console.log("beg of recursion")
     i = parseInt(i);
     let location = [i-numCols-1,i-numCols,i-numCols+1,i+1,i+numCols+1,i+numCols,i+numCols-1,i-1];
     for (let j=0; j<8; j++){
+        //console.log("beg of for" +location[j]);
         if (boardArray[location[j]] !== 0 && boardArray[location[j]] !== "bomb"){
-            playerArray[location[j]] = boardArray[location[j]];
-            document.getElementById(`${location[j]}`).innerHTML = playerArray[location[j]];  ///placeholder code. render function will display ALL of player Array
+            if (playerArray[location[j]] === null){
+                playerArray[location[j]] = boardArray[location[j]];
+                document.getElementById(`${location[j]}`).innerHTML = playerArray[location[j]];  ///placeholder code. render function will display ALL of player Array
+                //console.log("if num" +location[j]);
+            } 
         }
-        if (boardArray[location[j]]===0){
-            playerArray[location[j]] = boardArray[location[j]];
-            document.getElementById(`${location[j]}`).innerHTML = playerArray[location[j]]; ///placeholder code. render function will display ALL of player Array
-            search2(location[j]);
+        else if (boardArray[location[j]]===0){
+            //console.log("if zero" +location[j]);
+            if (playerArray[location[j]] === null){
+                playerArray[location[j]] = boardArray[location[j]];
+                document.getElementById(`${location[j]}`).innerHTML = playerArray[location[j]]; ///placeholder code. render function will display ALL of player Array
+                search(location[j]);
+            }
         }
     }
 }
