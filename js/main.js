@@ -14,7 +14,6 @@ const table = document.querySelector('table');
 /*----- event listeners -----*/
 table.addEventListener('click',reveal);
 table.addEventListener('contextmenu',flag);
-//table.addEventListener('dblclick',questionMark); 
 
 function reveal(evt){
     let cellID = evt.target.id;
@@ -52,6 +51,10 @@ function render(){
 
 function flag(evt){
     let cellID = evt.target.id;
+    // if (playerArray[cellID]===null){
+    //     playerArray[cellID] = "bomb";
+    // }
+    // render();
     //console.log("hello" + cellID);
     evt.preventDefault(); //prevents rightclikc menu from popping up
     //evt.target.innerHTML = "rClick";
@@ -59,12 +62,6 @@ function flag(evt){
     evt.target.style.backgroundImage = "url('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/snowflake_2744.png')";
 
 }
-
-// function questionMark(evt){
-//     let cellID = evt.target.id;
-//     playerArray[cellID] = "?"; 
-//     console.log("hello")
-// }
 
 
 /*----- functions -----*/
@@ -169,147 +166,3 @@ function genNum(){
 }
 
 init();
-
-
-// function genNum(){
-//     for (let i=0; i<boardArray.length; i++){
-//         let count = 0;
-//         sqType = squareType(i);
-//         if (boardArray[i]!=="bomb"){
-//             switch (sqType){
-//                 case "top left corner": 
-//                     if(isBomb(1)) count++;
-//                     if(isBomb(numCols)) count++;
-//                     if(isBomb(numCols+1)) count++;
-//                     break;
-//                 case "top right corner":
-//                     if(isBomb(i-1)) count++; //left 
-//                     if(isBomb(i+numCols-1)) count++; //bot left
-//                     if(isBomb(i+numCols)) count++; //bot
-//                     break;
-//                 case "top row":
-//                     if(isBomb(i-1)) count++; //left 
-//                     if(isBomb(i+1)) count++; //right 
-//                     if(isBomb(i+numCols-1)) count++; //bot left
-//                     if(isBomb(i+numCols)) count++; //bot
-//                     if(isBomb(i+numCols+1)) count++; //bot right
-//                     break;
-//                 case "bot left corner":
-//                     if(isBomb(i-numCols)) count++; //top
-//                     if(isBomb(i-numCols+1)) count++; //top right
-//                     if(isBomb(i+1)) count++; //right
-//                     break;
-//                 case "left col":
-//                     if(isBomb(i-numCols)) count++; //top
-//                     if(isBomb(i-numCols+1)) count++; //top right
-//                     if(isBomb(i+1)) count++; //right
-//                     if(isBomb(i+numCols+1)) count++; //bot right
-//                     if(isBomb(i+numCols)) count++; //bot
-//                     break;
-//                 case "bot right corner":
-//                     if(isBomb(i-1)) count++;
-//                     if(isBomb(i-numCols)) count++;
-//                     if(isBomb(i-numCols-1)) count++;
-//                     break;
-//                 case "right col":
-//                     if(isBomb(i-numCols)) count++; //top
-//                     if(isBomb(i-numCols-1)) count++; //top left
-//                     if(isBomb(i-1)) count++; //left 
-//                     if(isBomb(i+numCols-1)) count++; //bot left
-//                     if(isBomb(i+numCols)) count++; //bot
-//                     break;
-//                 case "bot row":
-//                     if(isBomb(i-1)) count++; //left 
-//                     if(isBomb(i-numCols-1)) count++; //top left
-//                     if(isBomb(i-numCols)) count++; //top
-//                     if(isBomb(i-numCols+1)) count++; //top right
-//                     if(isBomb(i+1)) count++; //right
-//                     break;
-//                 default:
-//                     if(isBomb(i-numCols-1)) count++; //top left
-//                     if(isBomb(i-numCols)) count++; //top
-//                     if(isBomb(i-numCols+1)) count++; //top right
-//                     if(isBomb(i+1)) count++; //right
-//                     if(isBomb(i+numCols+1)) count++; //bot right
-//                     if(isBomb(i+numCols)) count++; //bot
-//                     if(isBomb(i+numCols-1)) count++; //bot left
-//                     if(isBomb(i-1)) count++; //left 
-//                     break;
-//             }
-//             boardArray[i] = count;
-//         }
-//     }
-//     return boardArray;
-// }
-
-// function squareType(i){
-//     if (i<numCols){
-//         if (i===0) return "top left corner";
-//         else if (i===numCols-1) return "top right corner";
-//         else return "top row"
-//     } else if (i%numCols===0){
-//         if (i===boardArray.length-numCols) return "bot left corner"
-//         else return "left col"
-//     } else if ((i+1)%numCols===0){
-//         if (i===boardArray.length-1) return "bot right corner"
-//         else return "right col"
-//     } else if (i>(boardArray.length-numCols) && i<boardArray.length) return "bot row";
-//     else return "regular";
-// }
-
-
-
-
-// function init(){
-//     for (let i=0; i<numRows; i++){
-//         boardArray[i] = new Array(); //create new array within array (row array)
-//         var row = table.insertRow(i);
-//         for (let j=0; j<numCols; j++){
-//             var cell = row.insertCell(-1); //accepts -1 or 0. -1 is to the left
-//             //cell.innerHTML = `${i}${j}`; //this is just to show the id of each cell so i know what it is
-//             cell.id=`${i}${j}`; //each td of the cell has an id matching an arrayindex
-//             boardArray[i].push(0); //push to end of current row array (i) - initial board array will have value starting as 0
-//         }
-//     }
-//     genBombs(25);
-// }
-
-// function genBombs(num){ //pass in how many bombs to generate
-//     for (let i=0; i<num; i++){
-//         let rowIdx = rndIdx(numRows);
-//         let colIdx = rndIdx(numCols);
-//         bombIndex = `${rowIdx}${colIdx}`;
-//         // are these 2 lines needed? what if i push this into an array and then do getelementbyid(${array[idx]}) for rendering. first line below is place hodler
-//         document.getElementById(bombIndex).innerHTML = "bomb"; //put bombs on board // this is just PLACEHOLDER CODE i wouldn't show bomb until they accidentally click it
-//         bombIdxArr.push(bombIndex); //do i even need this
-//         //
-//         boardArray[rowIdx][colIdx] = "bomb"; //add bomb to board array that stores bomb/num
-//     }
-//     return bombIdxArr; 
-//     //numBombs = bombIdxArr.length;
-// }
-
-// function genNum(){
-//     for (let i=0; i<boardArray.length; i++){
-//         for (let j=0; j<boardArray[0].length; j++){
-        
-//                 // if(boardArray[i-1][j-1] !== undefined && boardArray[i-1][j-1] !== "bomb")
-//                 //     boardArray[i-1][j-1]++;
-//                 // if(boardArray[i-1][j] !== undefined && boardArray[i-1][j] !== "bomb")
-//                 //     boardArray[i-1][j]++;
-//                 // if(boardArray[i-1][j+1] !== undefined && boardArray[i-1][j+1] !== "bomb")
-//                 //     boardArray[i-1][j+1]++;
-//                 // if(boardArray[i][j-1] !== undefined && boardArray[i][j-1] !== "bomb")
-//                 //     boardArray[i][j-1]++;
-//                 // if(boardArray[i][j+1] !== undefined && boardArray[i][j+1] !== "bomb")
-//                 //     boardArray[i][j+1]++;
-//                 // if(boardArray[i+1][j-1] !== undefined && boardArray[i+1][j-1] !== "bomb")
-//                 //     boardArray[i+1][j-1]++;
-//                 // if(boardArray[i+1][j] !== undefined && boardArray[i+1][j] !== "bomb")
-//                 //     boardArray[i+1][j]++;
-//                 // if(boardArray[i+1][j+1] !== undefined && boardArray[i+1][j+1] !== "bomb")
-//                 //     boardArray[i+1][j+1]++;
-//             }
-//         }
-//     }
-//
