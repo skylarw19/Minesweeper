@@ -22,15 +22,15 @@ table.addEventListener('dblclick',questionMark);
 
 function reveal(evt){
     let cellID = evt.target.id;
-    console.log(cellID); //coment out
+    //console.log(cellID); //coment out
     evt.target.innerHTML = boardArray[cellID]; //show on the board what is in the board array. woudl need to pass cellID to render func to display
     if (playerArray[cellID] === null /* OR EQUALS FLAG */){  //if playerarr cell is empty OR equals flag
         playerArray[cellID] = boardArray[cellID]; //set player array to what board array ele is
         //will need to add something here to check win condition if they click a bomb
         //console.log(playerArray); //comment out
     }  
-    // if(boardArray[cellID]===0) //if it clicked on zero
-    //     search(cellID);
+    if(boardArray[cellID]===0) //if it clicked on zero
+        search2(cellID);
     // once clicked, show Image/number
     // if click is bomb, lose 
     // if click is 0, expand board
@@ -91,8 +91,8 @@ function init(){
            playerArray[i] = "-";
        }
     }
-    genBombs(25);
-    genNum2();
+    genBombs(10);
+    genNum();
     //gen player array
    
     //genBombs(25); // init function should generate bombs
@@ -142,24 +142,56 @@ function isBomb(i){
 }
 
 //only search if bA[cell] ===0
-function search(i){
-    if(isBomb(i-numCols-1)) count++; //top left
+// function search(i){
+//     if(isBomb(i-numCols-1)) count++; //top left
+    
+//     if( typeof playerArray[i-numCols-1] !== 'undefined'){ //exists
+//         if (playerArray[i-numCols-1] === null){ //not revealed
+//             if (boardArray[i-numCols-1] !== 0 && boardArray[i-numCols-1] !== "bomb"){
+//                 playerArray[i-numCols-1] = boardArray[i-numCols-1];
+//                 document.getElementById(`${i-numCols-1}`).innerHTML = playerArray[i-numCols-1];  ///placeholder code. render function will display ALL of player Array
+//             }
+//             if (boardArray[i-numCols-1]===0){
+//                 playerArray[i-numCols-1] = boardArray[i-numCols-1];
+//                 document.getElementById(`${i-numCols-1}`).innerHTML = playerArray[i-numCols-1]; ///placeholder code. render function will display ALL of player Array
+//                 search(i-numCols-1);
+//             }
+//         }
+//     } 
+// }
 
-    if( typeof playerArray[i-numCols-1] !== 'undefined'){ //exists
-        if (playerArray[i-numCols-1] === null){ //not revealed
-            if (boardArray[i-numCols-1] !== 0 && boardArray[i-numCols-1] !== "bomb"){
-                playerArray[i-numCols-1] = boardArray[i-numCols-1];
-                document.getElementById(`${i-numCols-1}`).innerHTML = playerArray[i-numCols-1];  ///placeholder code. render function will display ALL of player Array
-            }
-            if (boardArray[i-numCols-1]===0){
-                playerArray[i-numCols-1] = boardArray[i-numCols-1];
-                document.getElementById(`${i-numCols-1}`).innerHTML = playerArray[i-numCols-1]; ///placeholder code. render function will display ALL of player Array
-                search(i-numCols-1);
-            }
+
+
+function search2(i){
+    i = parseInt(i);
+    let location = [i-numCols-1,i-numCols,i-numCols+1,i+1,i+numCols+1,i+numCols,i+numCols-1,i-1];
+    for (let j=0; j<8; j++){
+        if (boardArray[location[j]] !== 0 && boardArray[location[j]] !== "bomb"){
+            playerArray[location[j]] = boardArray[location[j]];
+            document.getElementById(`${location[j]}`).innerHTML = playerArray[location[j]];  ///placeholder code. render function will display ALL of player Array
         }
-        
-    } 
+        if (boardArray[location[j]]===0){
+            playerArray[location[j]] = boardArray[location[j]];
+            document.getElementById(`${location[j]}`).innerHTML = playerArray[location[j]]; ///placeholder code. render function will display ALL of player Array
+            search2(location[j]);
+        }
+    }
 }
+
+// function genNum(){
+//     for (let i=0; i<boardArray.length; i++){
+//         let location = [i-numCols-1,i-numCols,i-numCols+1,i+1,i+numCols+1,i+numCols,i+numCols-1,i-1]
+//         if(boardArray[i]!=="bomb" && boardArray[i]!== "-"){ //if sq not bomb and not border, count surroundings;
+//             let count = 0;
+//             for (let j=0; j<8; j++){
+//                 if (isBomb(location[j])) count++;
+//             }
+//             boardArray[i] = count;
+//         }
+//     }
+//     return boardArray;
+// }
+
 
 
 
