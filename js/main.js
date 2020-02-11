@@ -7,23 +7,19 @@ let playerArray =[]; //input what player assigns to later compare boardArray to 
 //or make player array the same as board array immediately. but change the the bombs to flags/vice versa.
 let numRows = 12; //can be user input in future
 let numCols = 12;
-let bombIdxArr = [];
-
 
 /*----- cached element references -----*/
 const table = document.querySelector('table');
-const tr = document.querySelector('tr'); //is this needed?
-const td = document.querySelector('td');  //is this needed?
 
 /*----- event listeners -----*/
 table.addEventListener('click',reveal);
 table.addEventListener('contextmenu',flag);
-table.addEventListener('dblclick',questionMark); 
+//table.addEventListener('dblclick',questionMark); 
 
 function reveal(evt){
     let cellID = evt.target.id;
     //console.log(cellID); //coment out
-    evt.target.innerHTML = boardArray[cellID]; //show on the board what is in the board array. woudl need to pass cellID to render func to display
+    /***********************/// evt.target.innerHTML = boardArray[cellID]; //show on the board what is in the board array. woudl need to pass cellID to render func to display
     if (playerArray[cellID] === null /* OR EQUALS FLAG */){  //if playerarr cell is empty OR equals flag
         playerArray[cellID] = boardArray[cellID]; //set player array to what board array ele is
         //will need to add something here to check win condition if they click a bomb
@@ -35,8 +31,24 @@ function reveal(evt){
     // if click is bomb, lose 
     // if click is 0, expand board
     // if it already shows a number/blank then it can't be clicked again
+    render();
 }
 
+
+function render(){
+    for (let i=0; i<boardArray.length; i++){
+        let cellID = document.getElementById(i);
+        if (playerArray[i] !== "-"){
+            if (playerArray[i]==="bomb"){
+                cellID.style.backgroundColor = "red";
+            } else {
+                cellID.textContent = playerArray[i];
+                if (playerArray[i]!== null)
+                    cellID.style.backgroundColor = "green";
+            }
+        }
+    }
+}
 
 function flag(evt){
     let cellID = evt.target.id;
@@ -48,11 +60,11 @@ function flag(evt){
 
 }
 
-function questionMark(evt){
-    let cellID = evt.target.id;
-    playerArray[cellID] = "?"; 
-    console.log("hello")
-}
+// function questionMark(evt){
+//     let cellID = evt.target.id;
+//     playerArray[cellID] = "?"; 
+//     console.log("hello")
+// }
 
 
 /*----- functions -----*/
@@ -69,6 +81,7 @@ function init(){
             numSquares++;
         }
     }
+    //gen player array
     for (let i=0; i<boardArray.length; i++){
         playerArray[i] = null;
     }
@@ -86,36 +99,17 @@ function init(){
             boardArray[i] = "-";
             playerArray[i] = "-";
        }
-       if (i>(boardArray.length-numCols) && i<boardArray.length){//bottom column
+       if (i>(boardArray.length-numCols) && i<boardArray.length){ //bottom row
            boardArray[i] = "-";
            playerArray[i] = "-";
        }
     }
     genBombs(25);
     genNum();
-    //gen player array
-   
-    //genBombs(25); // init function should generate bombs
-    //genNum(); // init func should genNum into board array
-    //rendering - init func shoudl render initial bombs and numbers but be HIDDEN until clicked.
+    //rendering - init func shoudl render initial bombs and numbers but be HIDDEN until clicked. so anctually inital render shoudln't show anythign at all
     //so maybe init func wont have render func. render shoudl be referenced in handleclick. inside render func:
     //inside render func: need to pass target?? unknown. if bomb show bomb image. 
 }
-function squareType(i){
-    if (i<numCols){
-        if (i===0) return "top left corner";
-        else if (i===numCols-1) return "top right corner";
-        else return "top row"
-    } else if (i%numCols===0){
-        if (i===boardArray.length-numCols) return "bot left corner"
-        else return "left col"
-    } else if ((i+1)%numCols===0){
-        if (i===boardArray.length-1) return "bot right corner"
-        else return "right col"
-    } else if (i>(boardArray.length-numCols) && i<boardArray.length) return "bot row";
-    else return "regular";
-}
-
 
 
 function rndIdx(numBombs){  //pass in num for either numRows or numCols that we want to multiply by
@@ -127,12 +121,10 @@ function genBombs(numBombs){
         let bombIndex = rndIdx(boardArray.length);
         // with border
         if(boardArray[bombIndex]!=="-"){
-            document.getElementById(bombIndex).innerHTML = "bomb"; //PLACEHOLDER CODE to show where bombs are curently, will need ot render the code
+            /*********//////////document.getElementById(bombIndex).innerHTML = "bomb"; //PLACEHOLDER CODE to show where bombs are curently, will need ot render the code
             boardArray[bombIndex] = "bomb"; //add to board array where bombs are
         }
         //////////////////////////////////
-        bombIdxArr.push(bombIndex); //used just to test out what the boms are
-        
     }
     return boardArray; 
 }
@@ -141,42 +133,18 @@ function isBomb(i){
     return boardArray[i]==="bomb";
 }
 
-//only search if bA[cell] ===0
-// function search(i){
-//     if(isBomb(i-numCols-1)) count++; //top left
-    
-//     if( typeof playerArray[i-numCols-1] !== 'undefined'){ //exists
-//         if (playerArray[i-numCols-1] === null){ //not revealed
-//             if (boardArray[i-numCols-1] !== 0 && boardArray[i-numCols-1] !== "bomb"){
-//                 playerArray[i-numCols-1] = boardArray[i-numCols-1];
-//                 document.getElementById(`${i-numCols-1}`).innerHTML = playerArray[i-numCols-1];  ///placeholder code. render function will display ALL of player Array
-//             }
-//             if (boardArray[i-numCols-1]===0){
-//                 playerArray[i-numCols-1] = boardArray[i-numCols-1];
-//                 document.getElementById(`${i-numCols-1}`).innerHTML = playerArray[i-numCols-1]; ///placeholder code. render function will display ALL of player Array
-//                 search(i-numCols-1);
-//             }
-//         }
-//     } 
-// }
-
-
 
 function search(i){
-    //console.log("beg of recursion")
     i = parseInt(i);
     let location = [i-numCols-1,i-numCols,i-numCols+1,i+1,i+numCols+1,i+numCols,i+numCols-1,i-1];
     for (let j=0; j<8; j++){
-        //console.log("beg of for" +location[j]);
         if (boardArray[location[j]] !== 0 && boardArray[location[j]] !== "bomb"){
             if (playerArray[location[j]] === null){
                 playerArray[location[j]] = boardArray[location[j]];
                 document.getElementById(`${location[j]}`).innerHTML = playerArray[location[j]];  ///placeholder code. render function will display ALL of player Array
-                //console.log("if num" +location[j]);
             } 
         }
         else if (boardArray[location[j]]===0){
-            //console.log("if zero" +location[j]);
             if (playerArray[location[j]] === null){
                 playerArray[location[j]] = boardArray[location[j]];
                 document.getElementById(`${location[j]}`).innerHTML = playerArray[location[j]]; ///placeholder code. render function will display ALL of player Array
@@ -185,47 +153,6 @@ function search(i){
         }
     }
 }
-
-// function genNum(){
-//     for (let i=0; i<boardArray.length; i++){
-//         let location = [i-numCols-1,i-numCols,i-numCols+1,i+1,i+numCols+1,i+numCols,i+numCols-1,i-1]
-//         if(boardArray[i]!=="bomb" && boardArray[i]!== "-"){ //if sq not bomb and not border, count surroundings;
-//             let count = 0;
-//             for (let j=0; j<8; j++){
-//                 if (isBomb(location[j])) count++;
-//             }
-//             boardArray[i] = count;
-//         }
-//     }
-//     return boardArray;
-// }
-
-
-
-
-
-function cascade(){
-
-}
-
-for (let i=0; i<boardArray.length; i++){
-    if (i<numCols){ //top row
-        boardArray[i] = "-";
-        playerArray[i] = "-";
-    }
-    if (i%numCols===0){ //left column
-         boardArray[i] = "-";
-         playerArray[i] = "-";
-    }
-    if ((i+1)%numCols===0){ //right column
-         boardArray[i] = "-";
-         playerArray[i] = "-";
-    }
-    if (i>(boardArray.length-numCols) && i<boardArray.length){//bottom column
-        boardArray[i] = "-";
-        playerArray[i] = "-";
-    }
- }
 
 function genNum(){
     for (let i=0; i<boardArray.length; i++){
@@ -241,7 +168,7 @@ function genNum(){
     return boardArray;
 }
 
-
+init();
 
 
 // function genNum(){
@@ -315,30 +242,23 @@ function genNum(){
 //     return boardArray;
 // }
 
+// function squareType(i){
+//     if (i<numCols){
+//         if (i===0) return "top left corner";
+//         else if (i===numCols-1) return "top right corner";
+//         else return "top row"
+//     } else if (i%numCols===0){
+//         if (i===boardArray.length-numCols) return "bot left corner"
+//         else return "left col"
+//     } else if ((i+1)%numCols===0){
+//         if (i===boardArray.length-1) return "bot right corner"
+//         else return "right col"
+//     } else if (i>(boardArray.length-numCols) && i<boardArray.length) return "bot row";
+//     else return "regular";
+// }
 
 
 
-
-
-function squareType(i){
-    if (i<numCols){
-        if (i===0) return "top left corner";
-        else if (i===numCols-1) return "top right corner";
-        else return "top row"
-    } else if (i%numCols===0){
-        if (i===boardArray.length-numCols) return "bot left corner"
-        else return "left col"
-    } else if ((i+1)%numCols===0){
-        if (i===boardArray.length-1) return "bot right corner"
-        else return "right col"
-    } else if (i>(boardArray.length-numCols) && i<boardArray.length) return "bot row";
-    else return "regular";
-}
-
-function render(){
-
-}
-init();
 
 // function init(){
 //     for (let i=0; i<numRows; i++){
