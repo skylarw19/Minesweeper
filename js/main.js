@@ -9,6 +9,7 @@ let numRows = 10; //can be user input in future
 let numCols = 10;
 let bombIdxArr = [];
 
+
 /*----- cached element references -----*/
 const table = document.querySelector('table');
 const tr = document.querySelector('tr'); //is this needed?
@@ -22,20 +23,20 @@ table.addEventListener('dblclick',questionMark);
 function reveal(evt){
     let cellID = evt.target.id;
     console.log(cellID); //coment out
-    evt.target.innerHTML = boardArray[cellID]; //show on the board what is in the board array
-    if (playerArray[cellID] === undefined /* OR EQUALS FLAG */){  //if playerarr cell is empty OR equals flag
+    evt.target.innerHTML = boardArray[cellID]; //show on the board what is in the board array. woudl need to pass cellID to render func to display
+    if (playerArray[cellID] === null /* OR EQUALS FLAG */){  //if playerarr cell is empty OR equals flag
         playerArray[cellID] = boardArray[cellID]; //set player array to what board array ele is
         //will need to add something here to check win condition if they click a bomb
         //console.log(playerArray); //comment out
-    } 
-        
+    }  
+    if(boardArray[cellID]===0) //if it clicked on zero
+        search(cellID);
     // once clicked, show Image/number
     // if click is bomb, lose 
     // if click is 0, expand board
     // if it already shows a number/blank then it can't be clicked again
-    
-    
 }
+
 
 function flag(evt){
     let cellID = evt.target.id;
@@ -70,6 +71,9 @@ function init(){
     }
     genBombs(25);
     genNum();
+    for (let i=0; i<boardArray.length; i++){
+        playerArray[i] = null;
+    }
     //genBombs(25); // init function should generate bombs
     //genNum(); // init func should genNum into board array
     //rendering - init func shoudl render initial bombs and numbers but be HIDDEN until clicked.
@@ -95,6 +99,36 @@ function genBombs(numBombs){
 
 function isBomb(i){
     return boardArray[i]==="bomb";
+}
+
+//only search if bA[cell] ===0
+function search(i){
+    // if(isBomb(i-numCols-1)) count++; //top left
+
+    if( typeof playerArray[i-numCols-1] !== 'undefined'){ //exists
+        if (playerArray[i-numCols-1] === null){ //not revealed
+            if (boardArray[i-numCols-1] !== 0 && boardArray[i-numCols-1] !== "bomb"){
+                playerArray[i-numCols-1] = boardArray[i-numCols-1];
+                document.getElementById(`${i-numCols-1}`).innerHTML = playerArray[i-numCols-1];  ///placeholder code. render function will display ALL of player Array
+            }
+            if (boardArray[i-numCols-1]===0){
+                playerArray[i-numCols-1] = boardArray[i-numCols-1];
+                document.getElementById(`${i-numCols-1}`).innerHTML = "ZERO";
+            }
+        }
+        
+    } 
+    // if(isBomb(i-numCols)) count++; //top
+    // if(isBomb(i-numCols+1)) count++; //top right
+    // if(isBomb(i+1)) count++; //right
+    // if(isBomb(i+numCols+1)) count++; //bot right
+    // if(isBomb(i+numCols)) count++; //bot
+    // if(isBomb(i+numCols-1)) count++; //bot left
+    // if(isBomb(i-1)) count++; //left 
+}
+
+function cascade(){
+
 }
 
 function genNum(){
