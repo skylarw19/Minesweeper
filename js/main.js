@@ -143,9 +143,9 @@ function genNum(){
                     if(isBomb(numCols+1)) count++;
                     break;
                 case "top right corner":
-                    if(isBomb(i-1)) count++;
-                    if(isBomb(i*2)) count++;
-                    if(isBomb((i*2)+1)) count++;
+                    if(isBomb(i-1)) count++; //left 
+                    if(isBomb(i+numCols-1)) count++; //bot left
+                    if(isBomb(i+numCols)) count++; //bot
                     break;
                 case "top row":
                     if(isBomb(i-1)) count++; //left 
@@ -155,9 +155,9 @@ function genNum(){
                     if(isBomb(i+numCols+1)) count++; //bot right
                     break;
                 case "bot left corner":
-                    if(isBomb(i/2)) count++;
-                    if(isBomb((i/2)+1)) count++;
-                    if(isBomb(i+1)) count++;
+                    if(isBomb(i-numCols)) count++; //top
+                    if(isBomb(i-numCols+1)) count++; //top right
+                    if(isBomb(i+1)) count++; //right
                     break;
                 case "left col":
                     if(isBomb(i-numCols)) count++; //top
