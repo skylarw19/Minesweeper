@@ -5,8 +5,8 @@ let boardArray = []; //stores what is in each sq of the game board
 let playerArray =[]; //input what player assigns to later compare boardArray to playerArray to check if win
 //or maybe dont compare boards but if all bombs are flagged --> win. then during handleclik checkwin?? 
 //or make player array the same as board array immediately. but change the the bombs to flags/vice versa.
-let numRows = 10; //can be user input in future
-let numCols = 10;
+let numRows = 12; //can be user input in future
+let numCols = 12;
 let bombIdxArr = [];
 
 
@@ -29,8 +29,8 @@ function reveal(evt){
         //will need to add something here to check win condition if they click a bomb
         //console.log(playerArray); //comment out
     }  
-    if(boardArray[cellID]===0) //if it clicked on zero
-        search(cellID);
+    // if(boardArray[cellID]===0) //if it clicked on zero
+    //     search(cellID);
     // once clicked, show Image/number
     // if click is bomb, lose 
     // if click is 0, expand board
@@ -69,16 +69,51 @@ function init(){
             numSquares++;
         }
     }
-    genBombs(25);
-    genNum();
     for (let i=0; i<boardArray.length; i++){
         playerArray[i] = null;
     }
+    //change edges to -
+    for (let i=0; i<boardArray.length; i++){
+       if (i<numCols){ //top row
+           boardArray[i] = "-";
+           playerArray[i] = "-";
+       }
+       if (i%numCols===0){ //left column
+            boardArray[i] = "-";
+            playerArray[i] = "-";
+       }
+       if ((i+1)%numCols===0){ //right column
+            boardArray[i] = "-";
+            playerArray[i] = "-";
+       }
+       if (i>(boardArray.length-numCols) && i<boardArray.length){//bottom column
+           boardArray[i] = "-";
+           playerArray[i] = "-";
+       }
+    }
+    genBombs(25);
+    genNum2();
+    //gen player array
+   
     //genBombs(25); // init function should generate bombs
     //genNum(); // init func should genNum into board array
     //rendering - init func shoudl render initial bombs and numbers but be HIDDEN until clicked.
     //so maybe init func wont have render func. render shoudl be referenced in handleclick. inside render func:
     //inside render func: need to pass target?? unknown. if bomb show bomb image. 
+}
+function squareType(i){
+    if (i<numCols){
+        if (i===0) return "top left corner";
+        else if (i===numCols-1) return "top right corner";
+        else return "top row"
+    } else if (i%numCols===0){
+        if (i===boardArray.length-numCols) return "bot left corner"
+        else return "left col"
+    } else if ((i+1)%numCols===0){
+        if (i===boardArray.length-1) return "bot right corner"
+        else return "right col"
+    } else if (i>(boardArray.length-numCols) && i<boardArray.length) return "bot row";
+    else return "regular";
 }
 
 
@@ -90,9 +125,14 @@ function rndIdx(numBombs){  //pass in num for either numRows or numCols that we 
 function genBombs(numBombs){
     for (let i=0; i<numBombs; i++){
         let bombIndex = rndIdx(boardArray.length);
-        document.getElementById(bombIndex).innerHTML = "bomb"; //PLACEHOLDER CODE to show where bombs are curently, will need ot render the code
+        // with border
+        if(boardArray[bombIndex]!=="-"){
+            document.getElementById(bombIndex).innerHTML = "bomb"; //PLACEHOLDER CODE to show where bombs are curently, will need ot render the code
+            boardArray[bombIndex] = "bomb"; //add to board array where bombs are
+        }
+        //////////////////////////////////
         bombIdxArr.push(bombIndex); //used just to test out what the boms are
-        boardArray[bombIndex] = "bomb"; //add to board array where bombs are
+        
     }
     return boardArray; 
 }
@@ -103,7 +143,7 @@ function isBomb(i){
 
 //only search if bA[cell] ===0
 function search(i){
-    // if(isBomb(i-numCols-1)) count++; //top left
+    if(isBomb(i-numCols-1)) count++; //top left
 
     if( typeof playerArray[i-numCols-1] !== 'undefined'){ //exists
         if (playerArray[i-numCols-1] === null){ //not revealed
@@ -113,94 +153,132 @@ function search(i){
             }
             if (boardArray[i-numCols-1]===0){
                 playerArray[i-numCols-1] = boardArray[i-numCols-1];
-                document.getElementById(`${i-numCols-1}`).innerHTML = "ZERO";
+                document.getElementById(`${i-numCols-1}`).innerHTML = playerArray[i-numCols-1]; ///placeholder code. render function will display ALL of player Array
+                search(i-numCols-1);
             }
         }
         
     } 
-    // if(isBomb(i-numCols)) count++; //top
-    // if(isBomb(i-numCols+1)) count++; //top right
-    // if(isBomb(i+1)) count++; //right
-    // if(isBomb(i+numCols+1)) count++; //bot right
-    // if(isBomb(i+numCols)) count++; //bot
-    // if(isBomb(i+numCols-1)) count++; //bot left
-    // if(isBomb(i-1)) count++; //left 
 }
+
+
+
 
 function cascade(){
 
 }
 
+for (let i=0; i<boardArray.length; i++){
+    if (i<numCols){ //top row
+        boardArray[i] = "-";
+        playerArray[i] = "-";
+    }
+    if (i%numCols===0){ //left column
+         boardArray[i] = "-";
+         playerArray[i] = "-";
+    }
+    if ((i+1)%numCols===0){ //right column
+         boardArray[i] = "-";
+         playerArray[i] = "-";
+    }
+    if (i>(boardArray.length-numCols) && i<boardArray.length){//bottom column
+        boardArray[i] = "-";
+        playerArray[i] = "-";
+    }
+ }
+
 function genNum(){
     for (let i=0; i<boardArray.length; i++){
-        let count = 0;
-        sqType = squareType(i);
-        if (boardArray[i]!=="bomb"){
-            switch (sqType){
-                case "top left corner": 
-                    if(isBomb(1)) count++;
-                    if(isBomb(numCols)) count++;
-                    if(isBomb(numCols+1)) count++;
-                    break;
-                case "top right corner":
-                    if(isBomb(i-1)) count++; //left 
-                    if(isBomb(i+numCols-1)) count++; //bot left
-                    if(isBomb(i+numCols)) count++; //bot
-                    break;
-                case "top row":
-                    if(isBomb(i-1)) count++; //left 
-                    if(isBomb(i+1)) count++; //right 
-                    if(isBomb(i+numCols-1)) count++; //bot left
-                    if(isBomb(i+numCols)) count++; //bot
-                    if(isBomb(i+numCols+1)) count++; //bot right
-                    break;
-                case "bot left corner":
-                    if(isBomb(i-numCols)) count++; //top
-                    if(isBomb(i-numCols+1)) count++; //top right
-                    if(isBomb(i+1)) count++; //right
-                    break;
-                case "left col":
-                    if(isBomb(i-numCols)) count++; //top
-                    if(isBomb(i-numCols+1)) count++; //top right
-                    if(isBomb(i+1)) count++; //right
-                    if(isBomb(i+numCols+1)) count++; //bot right
-                    if(isBomb(i+numCols)) count++; //bot
-                    break;
-                case "bot right corner":
-                    if(isBomb(i-1)) count++;
-                    if(isBomb(i-numCols)) count++;
-                    if(isBomb(i-numCols-1)) count++;
-                    break;
-                case "right col":
-                    if(isBomb(i-numCols)) count++; //top
-                    if(isBomb(i-numCols-1)) count++; //top left
-                    if(isBomb(i-1)) count++; //left 
-                    if(isBomb(i+numCols-1)) count++; //bot left
-                    if(isBomb(i+numCols)) count++; //bot
-                    break;
-                case "bot row":
-                    if(isBomb(i-1)) count++; //left 
-                    if(isBomb(i-numCols-1)) count++; //top left
-                    if(isBomb(i-numCols)) count++; //top
-                    if(isBomb(i-numCols+1)) count++; //top right
-                    if(isBomb(i+1)) count++; //right
-                    break;
-                default:
-                    if(isBomb(i-numCols-1)) count++; //top left
-                    if(isBomb(i-numCols)) count++; //top
-                    if(isBomb(i-numCols+1)) count++; //top right
-                    if(isBomb(i+1)) count++; //right
-                    if(isBomb(i+numCols+1)) count++; //bot right
-                    if(isBomb(i+numCols)) count++; //bot
-                    if(isBomb(i+numCols-1)) count++; //bot left
-                    if(isBomb(i-1)) count++; //left 
-                    break;
+        let location = [i-numCols-1,i-numCols,i-numCols+1,i+1,i+numCols+1,i+numCols,i+numCols-1,i-1]
+        if(boardArray[i]!=="bomb" && boardArray[i]!== "-"){ //if sq not bomb and not border, count surroundings;
+            let count = 0;
+            for (let j=0; j<8; j++){
+                if (isBomb(location[j])) count++;
             }
             boardArray[i] = count;
         }
     }
     return boardArray;
 }
+
+
+
+
+// function genNum(){
+//     for (let i=0; i<boardArray.length; i++){
+//         let count = 0;
+//         sqType = squareType(i);
+//         if (boardArray[i]!=="bomb"){
+//             switch (sqType){
+//                 case "top left corner": 
+//                     if(isBomb(1)) count++;
+//                     if(isBomb(numCols)) count++;
+//                     if(isBomb(numCols+1)) count++;
+//                     break;
+//                 case "top right corner":
+//                     if(isBomb(i-1)) count++; //left 
+//                     if(isBomb(i+numCols-1)) count++; //bot left
+//                     if(isBomb(i+numCols)) count++; //bot
+//                     break;
+//                 case "top row":
+//                     if(isBomb(i-1)) count++; //left 
+//                     if(isBomb(i+1)) count++; //right 
+//                     if(isBomb(i+numCols-1)) count++; //bot left
+//                     if(isBomb(i+numCols)) count++; //bot
+//                     if(isBomb(i+numCols+1)) count++; //bot right
+//                     break;
+//                 case "bot left corner":
+//                     if(isBomb(i-numCols)) count++; //top
+//                     if(isBomb(i-numCols+1)) count++; //top right
+//                     if(isBomb(i+1)) count++; //right
+//                     break;
+//                 case "left col":
+//                     if(isBomb(i-numCols)) count++; //top
+//                     if(isBomb(i-numCols+1)) count++; //top right
+//                     if(isBomb(i+1)) count++; //right
+//                     if(isBomb(i+numCols+1)) count++; //bot right
+//                     if(isBomb(i+numCols)) count++; //bot
+//                     break;
+//                 case "bot right corner":
+//                     if(isBomb(i-1)) count++;
+//                     if(isBomb(i-numCols)) count++;
+//                     if(isBomb(i-numCols-1)) count++;
+//                     break;
+//                 case "right col":
+//                     if(isBomb(i-numCols)) count++; //top
+//                     if(isBomb(i-numCols-1)) count++; //top left
+//                     if(isBomb(i-1)) count++; //left 
+//                     if(isBomb(i+numCols-1)) count++; //bot left
+//                     if(isBomb(i+numCols)) count++; //bot
+//                     break;
+//                 case "bot row":
+//                     if(isBomb(i-1)) count++; //left 
+//                     if(isBomb(i-numCols-1)) count++; //top left
+//                     if(isBomb(i-numCols)) count++; //top
+//                     if(isBomb(i-numCols+1)) count++; //top right
+//                     if(isBomb(i+1)) count++; //right
+//                     break;
+//                 default:
+//                     if(isBomb(i-numCols-1)) count++; //top left
+//                     if(isBomb(i-numCols)) count++; //top
+//                     if(isBomb(i-numCols+1)) count++; //top right
+//                     if(isBomb(i+1)) count++; //right
+//                     if(isBomb(i+numCols+1)) count++; //bot right
+//                     if(isBomb(i+numCols)) count++; //bot
+//                     if(isBomb(i+numCols-1)) count++; //bot left
+//                     if(isBomb(i-1)) count++; //left 
+//                     break;
+//             }
+//             boardArray[i] = count;
+//         }
+//     }
+//     return boardArray;
+// }
+
+
+
+
+
 
 function squareType(i){
     if (i<numCols){
@@ -235,19 +313,6 @@ init();
 //     }
 //     genBombs(25);
 // }
-
-// sqType = squareType(45);
-// //EXAMPLE OF SWITCH CASE
-// switch (sqType){
-//     case 0:
-//         console.log("hello");
-//         break;
-//     case 1:
-//         console.log("hellow world");
-//         break;
-//     default: console.log("bye");
-// }
-
 
 // function genBombs(num){ //pass in how many bombs to generate
 //     for (let i=0; i<num; i++){
@@ -287,15 +352,4 @@ init();
 //             }
 //         }
 //     }
-
-
-
-
-// init();
-// genNum();
-// console.log(boardArray);
-
-// cell02 = document.getElementById('02');
-// cell02.style.backgroundColor = "red";
-// cell02.textContent = 'blah';
-
+//
