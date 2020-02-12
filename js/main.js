@@ -5,15 +5,16 @@ let boardArray = []; //stores what is in each sq of the game board
 let playerArray =[]; //input what player assigns to later compare boardArray to playerArray to check if win
 //or maybe dont compare boards but if all bombs are flagged --> win. then during handleclik checkwin?? 
 //or make player array the same as board array immediately. but change the the bombs to flags/vice versa.
-let numRows = 12; //can be user input in future
-let numCols = 12;
+let numRows = 16; //can be user input in future
+let numCols = 25;
 let numFlagsLeft;
 let isGameOver;
+let numberBombs = 1;
 
 /*----- cached element references -----*/
 const table = document.querySelector('table');
 const flagsLeft = document.getElementById('flagsLeft');
-const msg = document.getAnimations('message');
+const msg = document.getElementById('message');
 
 /*----- event listeners -----*/
 table.addEventListener('click',reveal);
@@ -69,11 +70,17 @@ function render(){
             else {
                 cellEl.textContent = playerArray[i];
                 if (playerArray[i]!== null)
-                    cellEl.style.backgroundColor = "green"; //--> show lighter color
+                    cellEl.style.backgroundColor = "rgba(255,255,255,0.8)"; //--> show lighter color
             }
         }
     }
-    flagsLeft.innerHTML = numFlagsLeft;
+    if (isWinner(numberBombs)){
+        msg.textContent = "Congratulations - You've saved Olaf from melting and the rest of Arendelle from burning down! The cold never bothered you anyway"
+    }
+    if (isGameOver === true){
+        msg.textContent = "Oh no!! Prince Hans has succeeded in melting Olaf."
+    }
+    flagsLeft.innerHTML = `${numFlagsLeft} flags left`;
 }
 
 
@@ -93,14 +100,14 @@ function render(){
 //     }
 // }
 
-function isWinner(){
+function isWinner(numberBombs){
+    let flagCount =0;
     for (let i = 0; i<playerArray.length; i++){
         if(playerArray[i] === "flag" && boardArray[i] === "bomb")
-        return true;
+            flagCount++;
     }
+    if (flagCount === numberBombs) return true;
 }
-
-
 
 /*----- functions -----*/
 
@@ -139,7 +146,7 @@ function init(){
            playerArray[i] = "-";
        }
     }
-    genBombs(30,0);
+    genBombs(1,0);
     genNum();
     numFlagsLeft = 30;
     isGameOver = false;
