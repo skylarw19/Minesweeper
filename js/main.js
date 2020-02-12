@@ -19,7 +19,7 @@ function reveal(evt){
     let cellID = evt.target.id;
     //console.log(cellID); //coment out
     /***********************/// evt.target.innerHTML = boardArray[cellID]; //show on the board what is in the board array. woudl need to pass cellID to render func to display
-    if (playerArray[cellID] === null /* OR EQUALS FLAG */){  //if playerarr cell is empty OR equals flag
+    if (playerArray[cellID] === null || playerArray[cellID] === "flag" /* OR EQUALS FLAG */){  //if playerarr cell is empty OR equals flag
         playerArray[cellID] = boardArray[cellID]; //set player array to what board array ele is
         //will need to add something here to check win condition if they click a bomb
         //console.log(playerArray); //comment out
@@ -30,38 +30,42 @@ function reveal(evt){
     // if click is bomb, lose 
     // if click is 0, expand board
     // if it already shows a number/blank then it can't be clicked again
+    if(boardArray[cellID]==="bomb"){
+        for(let i=0; i<boardArray.length; i++){
+            if (boardArray[i] === "bomb")
+                playerArray[i] = "bomb";
+        }
+    }
     render();
 }
 
+function flag(evt){
+    let cellID = evt.target.id;
+    evt.preventDefault(); //prevents rightclikc menu from popping up
+    if (playerArray[cellID]===null){
+        playerArray[cellID] = "flag";
+    }
+    render();
+}
 
 function render(){
     for (let i=0; i<boardArray.length; i++){
-        let cellID = document.getElementById(i);
         if (playerArray[i] !== "-"){
-            if (playerArray[i]==="bomb"){
-                cellID.style.backgroundColor = "red";
-            } else {
-                cellID.textContent = playerArray[i];
+            let cellEl = document.getElementById(i);
+            if (playerArray[i] === "flag")
+                cellEl.style.backgroundImage = "url('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/snowflake_2744.png')";
+            else if (playerArray[i] === "bomb")
+                cellEl.style.backgroundColor = "red";
+            else {
+                cellEl.textContent = playerArray[i];
                 if (playerArray[i]!== null)
-                    cellID.style.backgroundColor = "green";
+                    cellEl.style.backgroundColor = "green"; //--> show lighter color
             }
         }
     }
 }
 
-function flag(evt){
-    let cellID = evt.target.id;
-    // if (playerArray[cellID]===null){
-    //     playerArray[cellID] = "bomb";
-    // }
-    // render();
-    //console.log("hello" + cellID);
-    evt.preventDefault(); //prevents rightclikc menu from popping up
-    //evt.target.innerHTML = "rClick";
-    //when you right click, you're flaggin it. 
-    evt.target.style.backgroundImage = "url('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/snowflake_2744.png')";
 
-}
 
 
 /*----- functions -----*/
@@ -116,39 +120,16 @@ function rndIdx(numBombs){  //pass in num for either numRows or numCols that we 
 function genBombs(numBombs){
     for (let i=0; i<numBombs; i++){
         let bombIndex = rndIdx(boardArray.length);
-        // with border
         if(boardArray[bombIndex]!=="-"){
             /*********//////////document.getElementById(bombIndex).innerHTML = "bomb"; //PLACEHOLDER CODE to show where bombs are curently, will need ot render the code
             boardArray[bombIndex] = "bomb"; //add to board array where bombs are
         }
-        //////////////////////////////////
     }
     return boardArray; 
 }
 
 function isBomb(i){
     return boardArray[i]==="bomb";
-}
-
-
-function search(i){
-    i = parseInt(i);
-    let location = [i-numCols-1,i-numCols,i-numCols+1,i+1,i+numCols+1,i+numCols,i+numCols-1,i-1];
-    for (let j=0; j<8; j++){
-        if (boardArray[location[j]] !== 0 && boardArray[location[j]] !== "bomb"){
-            if (playerArray[location[j]] === null){
-                playerArray[location[j]] = boardArray[location[j]];
-                document.getElementById(`${location[j]}`).innerHTML = playerArray[location[j]];  ///placeholder code. render function will display ALL of player Array
-            } 
-        }
-        else if (boardArray[location[j]]===0){
-            if (playerArray[location[j]] === null){
-                playerArray[location[j]] = boardArray[location[j]];
-                document.getElementById(`${location[j]}`).innerHTML = playerArray[location[j]]; ///placeholder code. render function will display ALL of player Array
-                search(location[j]);
-            }
-        }
-    }
 }
 
 function genNum(){
@@ -163,6 +144,27 @@ function genNum(){
         }
     }
     return boardArray;
+}
+
+function search(i){
+    i = parseInt(i);
+    let location = [i-numCols-1,i-numCols,i-numCols+1,i+1,i+numCols+1,i+numCols,i+numCols-1,i-1];
+    for (let j=0; j<8; j++){
+        if (boardArray[location[j]] !== 0 && boardArray[location[j]] !== "bomb"){
+            if (playerArray[location[j]] === null){
+                playerArray[location[j]] = boardArray[location[j]];
+                //document.getElementById(`${location[j]}`).innerHTML = playerArray[location[j]];  ///placeholder code. render function will display ALL of player Array
+            } 
+        }
+        else if (boardArray[location[j]]===0){
+            if (playerArray[location[j]] === null){
+                playerArray[location[j]] = boardArray[location[j]];
+                //document.getElementById(`${location[j]}`).innerHTML = playerArray[location[j]]; ///placeholder code. render function will display ALL of player Array
+                search(location[j]);
+            }
+        }
+    }
+    return playerArray;
 }
 
 init();
