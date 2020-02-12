@@ -62,16 +62,16 @@ function render(){
             cellEl.classList.add("regular");
             if (playerArray[i] === "flag"){
                 cellEl.textContent =  "❄️"; 
-                cellEl.style.backgroundColor = "rgba(150,150,150,0.75)"
+                cellEl.classList.add("revealed");
             }
             else if (playerArray[i] === "bomb"){
                 cellEl.textContent = "🔥";
-                cellEl.style.backgroundColor = "rgba(150,150,150,0.75)"
+                cellEl.classList.add("revealed");
             }
             else {
                 cellEl.textContent = playerArray[i];
                 if (playerArray[i]!== null)
-                    cellEl.style.backgroundColor = "rgba(255,255,255,0.8)"; //--> show lighter color
+                    cellEl.classList.add("revealNum"); //--> show lighter color
             }
         } else cellEl.classList.add("edge");
     }
