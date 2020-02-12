@@ -7,43 +7,53 @@ let playerArray =[]; //input what player assigns to later compare boardArray to 
 //or make player array the same as board array immediately. but change the the bombs to flags/vice versa.
 let numRows = 12; //can be user input in future
 let numCols = 12;
+let numFlagsLeft;
+let isGameOver;
 
 /*----- cached element references -----*/
 const table = document.querySelector('table');
+const flagsLeft = document.getElementById('flagsLeft');
+const msg = document.getAnimations('message');
 
 /*----- event listeners -----*/
 table.addEventListener('click',reveal);
 table.addEventListener('contextmenu',flag);
 
 function reveal(evt){
-    let cellID = evt.target.id;
-    //console.log(cellID); //coment out
-    /***********************/// evt.target.innerHTML = boardArray[cellID]; //show on the board what is in the board array. woudl need to pass cellID to render func to display
-    if (playerArray[cellID] === null || playerArray[cellID] === "flag" /* OR EQUALS FLAG */){  //if playerarr cell is empty OR equals flag
-        playerArray[cellID] = boardArray[cellID]; //set player array to what board array ele is
-        //will need to add something here to check win condition if they click a bomb
-        //console.log(playerArray); //comment out
-    }  
-    if(boardArray[cellID]===0) //if it clicked on zero
-        search(cellID);
-    // once clicked, show Image/number
-    // if click is bomb, lose 
-    // if click is 0, expand board
-    // if it already shows a number/blank then it can't be clicked again
-    if(boardArray[cellID]==="bomb"){
-        for(let i=0; i<boardArray.length; i++){
-            if (boardArray[i] === "bomb")
-                playerArray[i] = "bomb";
+        let cellID = evt.target.id;
+        if(isGameOver === false){
+            if (playerArray[cellID] === null || playerArray[cellID] === "flag"){  
+                playerArray[cellID] = boardArray[cellID];
+                if (playerArray[cellID] === "flag")
+                    numFlagsLeft++; 
+            }  
+            if(boardArray[cellID]===0) //if it clicked on zero
+                search(cellID);
         }
-    }
+        if(boardArray[cellID]==="bomb"){
+            for(let i=0; i<boardArray.length; i++){
+                if (boardArray[i] === "bomb")
+                    playerArray[i] = "bomb";   
+            }
+            isGameOver = true;
+        }
+    //checkWin(cellID);
     render();
 }
 
+// function isGameOver(cellID){
+//     if (playerArray[cellID] === "bomb") 
+//         return true;
+// }
+
 function flag(evt){
-    let cellID = evt.target.id;
-    evt.preventDefault(); //prevents rightclikc menu from popping up
-    if (playerArray[cellID]===null){
-        playerArray[cellID] = "flag";
+    evt.preventDefault(); 
+    if(isGameOver === false){
+        let cellID = evt.target.id;
+        if (playerArray[cellID]===null){
+            playerArray[cellID] = "flag";
+            numFlagsLeft--;
+        }
     }
     render();
 }
@@ -53,9 +63,9 @@ function render(){
         if (playerArray[i] !== "-"){
             let cellEl = document.getElementById(i);
             if (playerArray[i] === "flag")
-                cellEl.style.backgroundImage = "url('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/snowflake_2744.png')";
+                cellEl.textContent =  "☃️"; 
             else if (playerArray[i] === "bomb")
-                cellEl.style.backgroundColor = "red";
+                cellEl.textContent = "🔥";
             else {
                 cellEl.textContent = playerArray[i];
                 if (playerArray[i]!== null)
@@ -63,8 +73,32 @@ function render(){
             }
         }
     }
+    flagsLeft.innerHTML = numFlagsLeft;
 }
 
+
+// function checkWin(cellID){
+//     if (playerArray[cellID] === "bomb")
+//         return "game over";
+//     else {
+//         let win = true;
+//         while (win === true && i<boardArray.length)
+//         {
+//             if (playerArray[i] === boardArray[i] || (playerArray[i] === "flag" && boardArray[i] === "bomb")){
+//                 win = true;
+//             }
+//             i++;
+//         }
+//     return win;
+//     }
+// }
+
+function isWinner(){
+    for (let i = 0; i<playerArray.length; i++){
+        if(playerArray[i] === "flag" && boardArray[i] === "bomb")
+        return true;
+    }
+}
 
 
 
@@ -105,8 +139,11 @@ function init(){
            playerArray[i] = "-";
        }
     }
-    genBombs(25);
+    genBombs(30,0);
     genNum();
+    numFlagsLeft = 30;
+    isGameOver = false;
+    render();
     //rendering - init func shoudl render initial bombs and numbers but be HIDDEN until clicked. so anctually inital render shoudln't show anythign at all
     //so maybe init func wont have render func. render shoudl be referenced in handleclick. inside render func:
     //inside render func: need to pass target?? unknown. if bomb show bomb image. 
@@ -117,15 +154,54 @@ function rndIdx(numBombs){  //pass in num for either numRows or numCols that we 
     return idx = Math.floor(Math.random()*numBombs);
 }
 
-function genBombs(numBombs){
-    for (let i=0; i<numBombs; i++){
-        let bombIndex = rndIdx(boardArray.length);
-        if(boardArray[bombIndex]!=="-"){
-            /*********//////////document.getElementById(bombIndex).innerHTML = "bomb"; //PLACEHOLDER CODE to show where bombs are curently, will need ot render the code
-            boardArray[bombIndex] = "bomb"; //add to board array where bombs are
+// function genBombs(numBombs){
+//     for (let i=0; i<numBombs; i++){
+//         let bombIndex = rndIdx(boardArray.length);
+//         if(boardArray[bombIndex]!=="-" && boardArray[bombIndex] !== "bomb"){
+//             /*********//////////document.getElementById(bombIndex).innerHTML = "bomb"; //PLACEHOLDER CODE to show where bombs are curently, will need ot render the code
+//             boardArray[bombIndex] = "bomb"; //add to board array where bombs are
+//         }
+//     }
+//     return boardArray; 
+// }
+
+function genBombs(numBombs, bombCount){
+    while (bombCount < numBombs){ //gen Bombs with no repeat indexes
+        let bombIndex = rndIdx(boardArray.length)
+        if(boardArray[bombIndex]!=="-" && boardArray[bombIndex] !== "bomb"){
+            boardArray[bombIndex] = "bomb"; 
+            bombCount++;
         }
     }
-    return boardArray; 
+    console.log("bombCount after while loop: "+bombCount);
+     // ensure a bomb is not completely surrounded by other bombs
+    for (let i=0; i<boardArray.length; i++){
+        if(boardArray[i] === "bomb"){
+            let neighboringBombs = 0;
+            for (let j = 0; j<8; j++){
+                let location = [i-numCols-1,i-numCols,i-numCols+1,i+1,i+numCols+1,i+numCols,i+numCols-1,i-1];
+                if (boardArray[location[j]] === "bomb" || boardArray[location[j]] === "-")
+                    neighboringBombs++;
+            }
+            if (neighboringBombs === 8){
+                boardArray[i] = 0;
+                console.log("original bombcount: " + bombCount);
+                bombCount--;
+                console.log("new bomb count: " + bombCount);
+                console.log("index is " + i);
+                genBombs(numBombs,bombCount);
+            }
+        }  
+    }
+    console.log(bombCount);
+    return boardArray;
+}
+
+function test(){
+for (let i = 0; i<boardArray.length; i++){
+    let a = document.getElementById(i);
+    a.textContent = boardArray[i];
+}
 }
 
 function isBomb(i){
