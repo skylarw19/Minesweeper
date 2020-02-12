@@ -1,15 +1,14 @@
 /*----- constants -----*/
 
 /*----- app's state (variables) -----*/
-let boardArray = []; //stores what is in each sq of the game board
-let playerArray =[]; //input what player assigns to later compare boardArray to playerArray to check if win
-//or maybe dont compare boards but if all bombs are flagged --> win. then during handleclik checkwin?? 
-//or make player array the same as board array immediately. but change the the bombs to flags/vice versa.
+let boardArray = [];
+let playerArray =[]; 
 let numRows = 16; //can be user input in future
-let numCols = 25;
-let numFlagsLeft;
+let numCols = 20;
+let numberBombs = 30;
+let numFlagsLeft = numberBombs;
 let isGameOver;
-let numberBombs = 20;
+
 
 /*----- cached element references -----*/
 const table = document.querySelector('table');
@@ -76,12 +75,14 @@ function render(){
         } else cellEl.classList.add("edge");
     }
     if (isWinner(numberBombs)){
-        msg.textContent = "Congratulations - You've saved Olaf from melting and the rest of Arendelle from burning down! The cold never bothered you anyway"
+        msg.textContent = `Congratulations - You've saved Olaf from melting and the rest of Arendelle from burning down! 
+        The cold never bothered you anyway`
     }
     if (isGameOver === true){
-        msg.textContent = "Oh no! You were not able to succesfully aid Elsa in the fight against Hans. Olaf has melted."
+        msg.textContent = `Oh no! You were not able to succesfully aid Elsa in the fight against Hans. 
+        Olaf has melted.`
     }
-    flagsLeft.innerHTML = `${numFlagsLeft} flags left`;
+    flagsLeft.innerHTML = `${numFlagsLeft} ❄️`;
 }
 
 function isWinner(numberBombs){
@@ -129,7 +130,6 @@ function init(){
     }
     genBombs(numberBombs,0);
     genNum();
-    numFlagsLeft = numberBombs;
     isGameOver = false;
     render();
 }
