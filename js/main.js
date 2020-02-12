@@ -1,5 +1,3 @@
-/*----- constants -----*/
-
 /*----- app's state (variables) -----*/
 let boardArray = [];
 let playerArray =[]; 
@@ -8,7 +6,6 @@ let numCols = 20;
 let numberBombs = 30;
 let numFlagsLeft = numberBombs;
 let isGameOver;
-
 
 /*----- cached element references -----*/
 const table = document.querySelector('table');
@@ -146,7 +143,7 @@ function genBombs(numBombs, bombCount){
             bombCount++;
         }
     }
-    console.log("bombCount after while loop: "+bombCount);
+    
      // ensure a bomb is not completely surrounded by other bombs
     for (let i=0; i<boardArray.length; i++){
         if(boardArray[i] === "bomb"){
@@ -158,15 +155,11 @@ function genBombs(numBombs, bombCount){
             }
             if (neighboringBombs === 8){
                 boardArray[i] = 0;
-                console.log("original bombcount: " + bombCount);
                 bombCount--;
-                console.log("new bomb count: " + bombCount);
-                console.log("index is " + i);
                 genBombs(numBombs,bombCount);
             }
         }  
     }
-    console.log(bombCount);
     return boardArray;
 }
 
@@ -195,13 +188,11 @@ function search(i){
         if (boardArray[location[j]] !== 0 && boardArray[location[j]] !== "bomb"){
             if (playerArray[location[j]] === null){
                 playerArray[location[j]] = boardArray[location[j]];
-                //document.getElementById(`${location[j]}`).innerHTML = playerArray[location[j]];  ///placeholder code. render function will display ALL of player Array
             } 
         }
         else if (boardArray[location[j]]===0){
             if (playerArray[location[j]] === null){
                 playerArray[location[j]] = boardArray[location[j]];
-                //document.getElementById(`${location[j]}`).innerHTML = playerArray[location[j]]; ///placeholder code. render function will display ALL of player Array
                 search(location[j]);
             }
         }
