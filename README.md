@@ -60,8 +60,8 @@ Sven is tired of constantly being thought of as only a moose who loves carrots. 
 
 ## Next Steps:
 - Add a timer or stopwatch
-- Add background music or win/loss audio
+- ~~Add audio for clicks~~
+- Add falling snow in background or falling Olafs
 - Allow user input for board size
 - Allow user input for number of bombs
-- Add time tracker
 - Add mobile responsiveness
