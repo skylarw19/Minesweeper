@@ -3,17 +3,17 @@
 ## Objective:
 Create a browser-based game that accurately models playing a standard game of Minesweeper.
 ##
-##
 ## To play the game:
 Click [here](https://skylarw19.github.io/Minesweeper/) to play the game.
-##
 ##
 ## Motivation:
 Early on, before I had access to more intense computer games, Minesweeper was what I'd play. I thought it'd be great to replicate this timeless game while adding my own flavor to it. Since I'm obsessed with Frozen, what better thing to do than to make my whole game Frozen themed?!
 ## Prototype View:
 Here is an initial wire-frame of the game board:
 ![Frozen Minesweeper game board](assets/Wireframe.png)
+
 Here is what the game board looks like post-styling:
+
 ![Frozen Minesweeper Current](assets/frozen-minesweeper.png)
 ## Technology Implemented:
 - JavaScript
@@ -45,7 +45,7 @@ Here is what the game board looks like post-styling:
 Anna is incredibly bored staying in the castle all day. Luckily, she's discovered Frozen Minesweeper and is able to stay occupied until she's able to step outside of the castle on Elsa's coronation day.   
 
 ## User Persona #2:
-Sven is tired of constantly being thought of as only a moose who loves carrots. He is looking forward to improving his skills at Minesweeper to show Kristoff that he's not just another moose.
+Sven is tired of constantly being thought of as only a moose who loves carrots. He is looking forward to constantly practicing Minesweeper in order to improve his skills in order to show Kristoff that he's not just another moose.
 
 ## Minimum Viable Product:
 - As a user, I should be able to click a cell to reveal it
