@@ -10,7 +10,7 @@ Click [here](https://skylarw19.github.io/Minesweeper/) to play the game.
 Early on, before I had access to more intense computer games, Minesweeper was what I'd play. I thought it'd be great to replicate this timeless game while adding my own flavor to it. Since I'm obsessed with Frozen, what better thing to do than to make my whole game Frozen themed?!
 ## Prototype View:
 Here is an initial wire-frame of the game board:
-![Frozen Minesweeper game board](assets/Wireframe.png)
+![Frozen Minesweeper game board](assets/wireframe.png)
 
 Here is what the game board looks like post-styling:
 
