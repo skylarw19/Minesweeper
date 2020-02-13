@@ -1,4 +1,4 @@
-/*----- app's state (variables) -----*/
+///////////////*----- app's state (variables) -----*/
 let boardArray = [];
 let playerArray =[]; 
 let numRows = 16; //can be user input in future
@@ -7,19 +7,18 @@ let numberBombs = 30;
 let numFlagsLeft = numberBombs;
 let isGameOver;
 
-/*----- cached element references -----*/
+/////////////*----- cached element references -----*/
 const table = document.querySelector('table');
 const flagsLeft = document.getElementById('flagsLeft');
 const msg = document.getElementById('message');
 const restart = document.getElementById('restartBtn');
 
-/*----- event listeners -----*/
+//////////////////*----- event listeners -----*/
 table.addEventListener('click',reveal);
 table.addEventListener('contextmenu',flag);
 restart.addEventListener('click',init);
 
-
-/*----- functions -----*/
+//////////////////////////*----- functions -----*/
 
 function reveal(evt){
         let cellID = evt.target.id;
@@ -74,13 +73,16 @@ function render(){
             }
         } else cellEl.classList.add("edge");
     }
+    //message
+    msg.innerHTML = `Prince Hans has decided to take revenge by planting fires around Arendelle to melt Olaf and burn down the city. 
+    <br>Help Elsa save Olaf by putting out the fires as fast as possible!`;
     if (isWinner(numberBombs)){
-        msg.textContent = `Congratulations - You've saved Olaf from melting and the rest of Arendelle from burning down! 
-        The cold never bothered you anyway`
+        msg.innerHTML = `Congratulations - You've saved Olaf from melting and the rest of Arendelle from burning down! 
+        <br> The cold never bothered you anyway!`;
     }
     if (isGameOver === true){
-        msg.textContent = `Oh no! You were not able to succesfully aid Elsa in the fight against Hans. 
-        Olaf has melted.`
+        msg.innerHTML = `Oh no! You were not able to succesfully aid Elsa in the fight against Hans. 
+        <br> Olaf has melted.`;
     }
     flagsLeft.innerHTML = `${numFlagsLeft} ❄️`;
 }
