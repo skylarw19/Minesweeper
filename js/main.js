@@ -13,9 +13,9 @@ let isGameOver;
 
 /////////////*----- cached element references -----*/
 const table = document.querySelector('table');
-const flagsLeft = document.getElementById('flagsLeft');
-const msg = document.getElementById('message');
-const restart = document.getElementById('restartBtn');
+const flagsLeft = document.querySelector('#flagsLeft');
+const msg = document.querySelector('#message');
+const restart = document.querySelector('#restartBtn');
 
 //////////////////*----- event listeners -----*/
 table.addEventListener('click',reveal);
@@ -97,6 +97,7 @@ function init(){
     genBombs(numberBombs,0);
     genNum();
     isGameOver = false;
+    numFlagsLeft = numberBombs;
     render();
 }
 
