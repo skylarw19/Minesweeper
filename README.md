@@ -1,10 +1,10 @@
 # Frozen Minesweeper
-##
+
 ## Introduction:
 Before I had access to more intense computer games, Minesweeper was what I'd play when I was bored. I thought it'd be great to replicate this timeless game while adding my own flavor to it. What better way to do so than to make it Frozen themed?! In this version, bombs are fires set by the evil Prince Hans, and snowflakes sent by Queen Elsa are the flags used to mark the fires. Help Elsa keep Arendelle safe from the terrors of Hans!
 
-## To play the game:
-[Play](https://skylarw19.github.io/Minesweeper/ "Frozen Minesweeper") 
+## Play the game:
+[Play Frozen Minesweeper!](https://skylarw19.github.io/Minesweeper/) 
 
 ## View of Game:
 Initial wireframe:
@@ -15,9 +15,6 @@ Post-styling:
 
 Middle of Game:
 ![frozen minesweeper mid of game](assets/frozen-minesweeper-mid.png)
-
-End of Game:
-![frozen minesweeper end of game](assets/frozen-minesweeper-end.png)
 
 ## Technology Implemented:
 - JavaScript
@@ -64,7 +61,7 @@ Sven is tired of constantly being thought of as only a moose who loves carrots. 
 ## Next Steps:
 - Add a timer or stopwatch
 - ~~Add audio for clicks~~
-- Add falling snow in background or falling Olafs
+- ~~Add falling snow in background or falling Olafs~~
 - Allow user input for board size
 - Allow user input for number of bombs
 - Add mobile responsiveness
