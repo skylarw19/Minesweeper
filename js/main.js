@@ -1,9 +1,13 @@
+///////////////*----- audio ----------------/
+var snowflakeSound = new Audio('audio/411460__inspectorj__power-up-bright-a.wav');
+var bombSound = new Audio('audio/235968__tommccann__explosion-01.wav');
+
 ///////////////*----- app's state (variables) -----*/
 let boardArray = [];
 let playerArray =[]; 
 let numRows = 17; //can be user input in future
 let numCols = 22;
-let numberBombs = 60;
+let numberBombs = 55;
 let numFlagsLeft = numberBombs;
 let isGameOver;
 
@@ -32,11 +36,11 @@ function reveal(evt){
                 searchZero(cellID);
         }
         if(boardArray[cellID]==="bomb"){ //if clicked bomb will need to reveal all bombs
-            for(let i=0; i<boardArray.length; i++){
-                if (boardArray[i] === "bomb")
-                    playerArray[i] = "bomb";   
+            for(let i=0; i<boardArray.length; i++){  
+                playerArray[i] = boardArray[i]; 
             }
             isGameOver = true;
+            bombSound.play();
         }
     render();
 }
@@ -44,6 +48,7 @@ function reveal(evt){
 function flag(evt){
     evt.preventDefault(); 
     if(isGameOver === false){
+        snowflakeSound.play();
         let cellID = evt.target.id;
         if (playerArray[cellID]===null){
             playerArray[cellID] = "flag";

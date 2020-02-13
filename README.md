@@ -1,7 +1,9 @@
 # Frozen Minesweeper
 ##
-## Objective:
-Create a browser-based game that accurately models playing a standard game of Minesweeper.
+## Introduction:
+Before I had access to more intense computer games, Minesweeper was what I'd play when I was bored. I thought it'd be great to replicate this timeless game while adding my own flavor to it. Create a browser-based game that accurately models playing a standard game of Minesweeper.
+
+
 
 ## To play the game:
 Click [here](https://skylarw19.github.io/Minesweeper/) to play the game.
@@ -24,6 +26,8 @@ Here is what the game board looks like post-styling:
 ## Credits:
 - Background Image https://images-na.ssl-images-amazon.com/images/I/91mwqh22xML._SL1500_.jpg Disney Animation Studios
 - Custom font https://www.fontspace.com/frozito-font-f28478 JoannaVu
+- Sound https://freesound.org/people/InspectorJ/sounds/411460/ InspectorJ
+- Sound https://freesound.org/people/tommccann/sounds/235968/ tommccann
 
 ## Pseudocode:
 - Generate game board
