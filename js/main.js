@@ -11,10 +11,13 @@ let isGameOver;
 const table = document.querySelector('table');
 const flagsLeft = document.getElementById('flagsLeft');
 const msg = document.getElementById('message');
+const restart = document.getElementById('restartBtn');
 
 /*----- event listeners -----*/
 table.addEventListener('click',reveal);
 table.addEventListener('contextmenu',flag);
+restart.addEventListener('click',init);
+
 
 /*----- functions -----*/
 
@@ -92,6 +95,11 @@ function isWinner(numberBombs){
 }
 
 function init(){
+    //clear board
+    table.innerHTML = "";
+    boardArray.splice(0,boardArray.length);
+
+    //init board
     var numSquares =0;
     for (let i=0; i<numRows; i++){
         var row = table.insertRow(i);
