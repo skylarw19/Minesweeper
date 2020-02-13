@@ -1,9 +1,9 @@
 ///////////////*----- app's state (variables) -----*/
 let boardArray = [];
 let playerArray =[]; 
-let numRows = 16; //can be user input in future
-let numCols = 20;
-let numberBombs = 30;
+let numRows = 17; //can be user input in future
+let numCols = 22;
+let numberBombs = 60;
 let numFlagsLeft = numberBombs;
 let isGameOver;
 
@@ -178,7 +178,9 @@ function render(){
                 cellEl.classList.add("revealed");
             }
             else {
-                cellEl.textContent = playerArray[i];
+                if (playerArray[i] === 0)
+                    cellEl.textContent = "";
+                else cellEl.textContent = playerArray[i];
                 if (playerArray[i]!== null)
                     cellEl.classList.add("revealNum"); 
             }
