@@ -5,9 +5,13 @@ body{
     flex-direction: column;
     background-image: url("https://images-na.ssl-images-amazon.com/images/I/91mwqh22xML._SL1500_.jpg");
     background-size: cover;
-    font-family: 'frozitomedium';
+    font-family: 'frozitomedium'; /*Frozito font from fontspace - JoannaVu*/
 }
-
+h1{
+    font-size: 60px;
+    margin-top: 80px;
+    margin-bottom: 30px;
+}
 
 div{
     padding: 10px;

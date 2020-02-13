@@ -185,7 +185,7 @@ function render(){
         } else cellEl.classList.add("edge");
     }
     //message
-    msg.innerHTML = `Prince Hans has decided to take revenge by planting fires around Arendelle to melt Olaf and burn down the city. 
+    msg.innerHTML = `Prince Hans just can't let it go and has decided to take revenge by planting fires around Arendelle to melt Olaf. 
     <br>Help Elsa save Olaf by putting out the fires as fast as possible!`;
     if (isWinner(numberBombs)){
         msg.innerHTML = `Congratulations - You've saved Olaf from melting and the rest of Arendelle from burning down! 
@@ -193,7 +193,7 @@ function render(){
     }
     if (isGameOver === true){
         msg.innerHTML = `Oh no! You were not able to succesfully aid Elsa in the fight against Hans. 
-        <br> Olaf has melted.`;
+        <br> Olaf has melted! (It's okay, some people are worth melting for.)`;
     }
     flagsLeft.innerHTML = `${numFlagsLeft} ❄️`;
 }
