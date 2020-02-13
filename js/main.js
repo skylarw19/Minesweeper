@@ -185,8 +185,8 @@ function render(){
         } else cellEl.classList.add("edge");
     }
     //message
-    msg.innerHTML = `Prince Hans just can't let it go and has decided to take revenge by planting fires around Arendelle to melt Olaf. 
-    <br>Help Elsa save Olaf by putting out the fires as fast as possible!`;
+    msg.innerHTML = `Prince Hans just can't let it go. <br> He has decided to take revenge by starting fires around Arendelle to melt Olaf. 
+    <br>Help Elsa save Olaf from melting by putting out the fires!`;
     if (isWinner(numberBombs)){
         msg.innerHTML = `Congratulations - You've saved Olaf from melting and the rest of Arendelle from burning down! 
         <br> The cold never bothered you anyway!`;
