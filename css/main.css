@@ -68,7 +68,11 @@ td.regular:hover{
 #flagsLeft{
     font-family: Arial, Helvetica, sans-serif;
 }
-
+#my-canvas{
+    float: left;
+    position: fixed;
+    z-index: -1; /* moves confetti back to b/w playing board and background */
+}
 
 
 

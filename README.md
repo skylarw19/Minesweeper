@@ -1,22 +1,24 @@
 # Frozen Minesweeper
 ##
 ## Introduction:
-Before I had access to more intense computer games, Minesweeper was what I'd play when I was bored. I thought it'd be great to replicate this timeless game while adding my own flavor to it. Create a browser-based game that accurately models playing a standard game of Minesweeper.
-
-
+Before I had access to more intense computer games, Minesweeper was what I'd play when I was bored. I thought it'd be great to replicate this timeless game while adding my own flavor to it. What better way to do so than to make it Frozen themed?! In this version, bombs are fires set by the evil Prince Hans, and snowflakes sent by Queen Elsa are the flags used to mark the fires. Help Elsa keep Arendelle safe from the terrors of Hans!
 
 ## To play the game:
-Click [here](https://skylarw19.github.io/Minesweeper/) to play the game.
+[Play](https://skylarw19.github.io/Minesweeper/ "Frozen Minesweeper") 
 
-## Motivation:
-Early on, before I had access to more intense computer games, Minesweeper was what I'd play. I thought it'd be great to replicate this timeless game while adding my own flavor to it. Since I'm obsessed with Frozen, what better thing to do than to make my whole game Frozen themed?!
-## Prototype View:
-Here is an initial wire-frame of the game board:
+## View of Game:
+Initial wireframe:
 ![Frozen Minesweeper game board](assets/wireframe.png)
 
-Here is what the game board looks like post-styling:
+Post-styling:
+![frozen minesweeper initial board](assets/frozen-minesweeper.png)
 
-![Frozen Minesweeper Current](assets/frozen-minesweeper.png)
+Middle of Game:
+![frozen minesweeper mid of game](assets/frozen-minesweeper-mid.png)
+
+End of Game:
+![frozen minesweeper end of game](assets/frozen-minesweeper-end.png)
+
 ## Technology Implemented:
 - JavaScript
 - CSS
@@ -24,10 +26,11 @@ Here is what the game board looks like post-styling:
 - Git 
 
 ## Credits:
-- Background Image https://images-na.ssl-images-amazon.com/images/I/91mwqh22xML._SL1500_.jpg Disney Animation Studios
-- Custom font https://www.fontspace.com/frozito-font-f28478 JoannaVu
-- Sound https://freesound.org/people/InspectorJ/sounds/411460/ InspectorJ
-- Sound https://freesound.org/people/tommccann/sounds/235968/ tommccann
+- Background Image by Walt Disney Animation Studios: https://images-na.ssl-images-amazon.com/images/I/91mwqh22xML._SL1500_.jpg
+- Custom Frozito font by JonnaVu: https://www.fontspace.com/frozito-font-f28478
+- Snowflake power-up sound by InspectorJ: https://freesound.org/people/InspectorJ/sounds/411460/
+- Explosion sound by tommccann: https://freesound.org/people/tommccann/sounds/235968/ 
+- confetti-js to generate snowfall by Agezao: https://github.com/Agezao/confetti-js#readme.
 
 ## Pseudocode:
 - Generate game board

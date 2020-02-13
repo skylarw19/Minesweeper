@@ -1,3 +1,13 @@
+///////////////*----------confetti--------/
+//import ConfettiGenerator from "./confetti";
+var snowConfettiSettings = { target: 'my-canvas',
+                            colors: [[255,255,255]],
+                            "props": ["circle"],
+                            start_from_edge: true,
+                            size: 1.5 };
+var snowConfetti = new ConfettiGenerator(snowConfettiSettings);
+snowConfetti.render();
+
 ///////////////*----- audio ----------------/
 var snowflakeSound = new Audio('audio/411460__inspectorj__power-up-bright-a.wav');
 var bombSound = new Audio('audio/235968__tommccann__explosion-01.wav');
@@ -99,6 +109,7 @@ function init(){
     isGameOver = false;
     numFlagsLeft = numberBombs;
     render();
+    
 }
 
 function rndIdx(numBombs){  //pass in num for either numRows or numCols that we want to multiply by
@@ -208,6 +219,7 @@ function render(){
         <br> fires started by Hans. Olaf has melted!`;
     }
     flagsLeft.innerHTML = `${numFlagsLeft} ❄️`;
+   
 }
 
 function isWinner(numberBombs){
