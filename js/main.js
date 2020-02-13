@@ -185,15 +185,19 @@ function render(){
         } else cellEl.classList.add("edge");
     }
     //message
-    msg.innerHTML = `Prince Hans just can't let it go. <br> He has decided to take revenge by starting fires around Arendelle to melt Olaf. 
-    <br>Help Elsa save Olaf from melting by putting out the fires!`;
+    msg.innerHTML = `The unredeemable monster, Prince Hans, just can't let it go. 
+    <br> He has decided to take revenge by starting fires around Arendelle to melt Olaf. 
+    <br>Help Elsa save Olaf from melting by locating the fires!`;
     if (isWinner(numberBombs)){
-        msg.innerHTML = `Congratulations - You've saved Olaf from melting and the rest of Arendelle from burning down! 
-        <br> The cold never bothered you anyway!`;
+        msg.innerHTML = `Congratulations! 
+        <br> You've saved Olaf from melting and the rest of Arendelle from burning down! 
+        <br> The cold never bothered you anyway!!!!`;
     }
     if (isGameOver === true){
-        msg.innerHTML = `Oh no! You were not able to succesfully aid Elsa in the fight against Hans. 
-        <br> Olaf has melted! (It's okay, some people are worth melting for.)`;
+        msg.innerHTML = 
+        `Oh no! Thinking it safe to stroll around Arendelle, Olaf has run into a 
+        <br> fire that wasn't put out! You were unable to succesfully help Elsa freeze the 
+        <br> fires started by Hans. Olaf has melted!`;
     }
     flagsLeft.innerHTML = `${numFlagsLeft} ❄️`;
 }
