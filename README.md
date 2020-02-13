@@ -2,10 +2,10 @@
 ##
 ## Objective:
 Create a browser-based game that accurately models playing a standard game of Minesweeper.
-##
+
 ## To play the game:
 Click [here](https://skylarw19.github.io/Minesweeper/) to play the game.
-##
+
 ## Motivation:
 Early on, before I had access to more intense computer games, Minesweeper was what I'd play. I thought it'd be great to replicate this timeless game while adding my own flavor to it. Since I'm obsessed with Frozen, what better thing to do than to make my whole game Frozen themed?!
 ## Prototype View:
