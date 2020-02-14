@@ -1,5 +1,4 @@
 ///////////////*----------confetti--------/
-//import ConfettiGenerator from "./confetti";
 var snowConfettiSettings = { target: 'my-canvas',
                             colors: [[255,255,255]],
                             "props": ["circle"],
@@ -15,17 +14,20 @@ var bombSound = new Audio('audio/235968__tommccann__explosion-01.wav');
 ///////////////*----- app's state (variables) -----*/
 let boardArray = [];
 let playerArray =[]; 
-let numRows = 17; //can be user input in future
+let numRows = 17; //change to be user input in the future
 let numCols = 22;
-let numberBombs = 55;
+let numberBombs = 55; //change to be user input in the future
 let numFlagsLeft = numberBombs;
 let isGameOver;
+let seconds;
+let firstClick;
 
 /////////////*----- cached element references -----*/
 const table = document.querySelector('table');
 const flagsLeft = document.querySelector('#flagsLeft');
 const msg = document.querySelector('#message');
 const restart = document.querySelector('#restartBtn');
+const stopwatchEl = document.querySelector('#stopwatch');
 
 //////////////////*----- event listeners -----*/
 table.addEventListener('click',reveal);
@@ -33,6 +35,7 @@ table.addEventListener('contextmenu',flag);
 restart.addEventListener('click',init);
 
 //////////////////////////*----- functions -----*/
+init();
 
 function reveal(evt){
         let cellID = evt.target.id;
@@ -45,12 +48,16 @@ function reveal(evt){
             if(boardArray[cellID]===0) //if clicked zero, reveal all connecting zeros
                 searchZero(cellID);
         }
-        if(boardArray[cellID]==="bomb"){ //if clicked bomb will need to reveal all bombs
+        if(boardArray[cellID]==="bomb"){ //if clicked bomb reveal full board
             for(let i=0; i<boardArray.length; i++){  
                 playerArray[i] = boardArray[i]; 
             }
             isGameOver = true;
             bombSound.play();
+        }
+        if (firstClick === 0){ //timer starts on first click
+            stopwatch();
+            firstClick++;
         }
     render();
 }
@@ -108,11 +115,13 @@ function init(){
     genNum();
     isGameOver = false;
     numFlagsLeft = numberBombs;
+    seconds = 0;
+    firstClick = 0;
+    renderTime();
     render();
-    
 }
 
-function rndIdx(numBombs){  //pass in num for either numRows or numCols that we want to multiply by
+function rndIdx(numBombs){  
     return idx = Math.floor(Math.random()*numBombs);
 }
 
@@ -161,17 +170,17 @@ function genNum(){
     return boardArray;
 }
 
-//if zero is clicked, all connecting zeros must be revealed until it reveals number
+//if zero is clicked, all connecting zeros must be revealed until adjacent non-zero numbers are revealed
 function searchZero(i){
     i = parseInt(i);
     let location = [i-numCols-1,i-numCols,i-numCols+1,i+1,i+numCols+1,i+numCols,i+numCols-1,i-1];
     for (let j=0; j<8; j++){
-        if (boardArray[location[j]] !== 0 && boardArray[location[j]] !== "bomb"){
-            if (playerArray[location[j]] === null){
+        if (boardArray[location[j]] !== 0 && boardArray[location[j]] !== "bomb"){ //if non-zero num
+            if (playerArray[location[j]] === null){ //if player arrary not empty (cell wasn't already revealed)
                 playerArray[location[j]] = boardArray[location[j]];
             } 
         }
-        else if (boardArray[location[j]]===0){
+        else if (boardArray[location[j]]===0){ //if zero, reveal all touching zeros
             if (playerArray[location[j]] === null){
                 playerArray[location[j]] = boardArray[location[j]];
                 searchZero(location[j]);
@@ -203,7 +212,11 @@ function render(){
             }
         } else cellEl.classList.add("edge");
     }
-    //message
+    flagsLeft.innerHTML = `${numFlagsLeft} ❄️`;
+    renderMessage();
+}
+
+function renderMessage(){
     msg.innerHTML = `The unredeemable monster, Prince Hans, just can't let it go. 
     <br> He has decided to take revenge by starting fires around Arendelle to melt Olaf. 
     <br>Help Elsa save Olaf from melting by locating the fires!`;
@@ -218,8 +231,6 @@ function render(){
         <br> fire that wasn't put out! You were unable to succesfully help Elsa freeze the 
         <br> fires started by Hans. Olaf has melted!`;
     }
-    flagsLeft.innerHTML = `${numFlagsLeft} ❄️`;
-   
 }
 
 function isWinner(numberBombs){
@@ -231,4 +242,22 @@ function isWinner(numberBombs){
     if (flagCount === numberBombs) return true;
 }
 
-init();
+function stopwatch() {
+    setTimeout(addTime, 1000);
+}
+
+function addTime(){
+    if (isGameOver ===false && !isWinner(numberBombs)){
+        seconds++;
+        renderTime();
+        stopwatch();
+    }
+}
+
+function renderTime(){
+    if (seconds <10)
+        stopwatchEl.textContent = `00${seconds}`;
+    else if(seconds <100)
+        stopwatchEl.textContent = `0${seconds}`;
+    else stopwatchEl.textContent = seconds;
+}
